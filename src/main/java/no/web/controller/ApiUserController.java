@@ -64,7 +64,7 @@ public class ApiUserController {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	ResponseEntity<User> delete(@PathVariable Long id){
-		userService.delete(id);
+		userService.remove(id);
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
