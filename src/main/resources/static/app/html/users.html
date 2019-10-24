@@ -1,0 +1,35 @@
+<div ng-controller="UsersCtrl">
+<h1>Users</h1>
+<form>
+	<div class="form-group">
+		<label for="sfname">Fname</label>
+		<input ng-model="searchParams.firstname" class="form-control" id="sfname">
+	</div>
+<div class="form-group">
+	<label for="slname">Lname</label>
+	<input ng-model="searchParams.lastname" class="form-control" id="slname">
+</div>
+<button class="btn btn-info" ng-click="doSearch()">Search</button>
+</form>	
+
+<table>
+	<thead>
+		<tr>
+			<th>First Name</th><th>Last Name</th><th>User Name</th><th>email</th><th>password</th>
+		</tr>
+	</thead>
+<tbody>
+<tr ng-repeat="u in users"></tr>
+<td>{{u.id}}</td>
+<td>{{u.firstname}}</td>
+<td>{{u.lastname}}</td>
+<td>{{u.username}}</td>
+<td>{{u.email}}</td>
+<td>{{u.password}}</td>	
+
+<td><button ng-click="goToEdit(u.id)">Edit</button></td>
+<td><button ng-click="goToDelete(u.id)">Delete</button></td>
+</tbody>
+</table>
+
+</div>

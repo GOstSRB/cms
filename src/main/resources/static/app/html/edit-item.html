@@ -1,0 +1,37 @@
+<div ng-controller="editItemCtrl">
+	<h1>Edit item</h1>
+	
+	<div class="row">
+				
+		<div class="col-12 col-lg-5">
+		
+			<form>
+
+				<div class="form-group">
+					<label for="quantity">Quantity</label>
+					<input id="quantity" class="form-control" ng-model="item.quantity"/>
+				</div>
+				<div class="form-group">
+					<label for="partPrice">Part Price</label>
+					<input id="partPrice" class="form-control" ng-model="item.partPrice"/>
+				</div>
+				<div class="form-group">
+					<label for="partType">Part Type</label>
+					<input id="partType" class="form-control" ng-model="item.partType"/>
+				</div>
+				<div class="form-group">
+					<label for="partName">Part Name</label>
+					<input id="partName" class="form-control" ng-model="item.partName"/>
+				</div>
+				<div class="form-group">
+					<label for="partNumber">Part Number</label>
+					<input id="partNumber" class="form-control" ng-model="item.partNumber"/>
+				</div>
+							
+				<button class="btn btn-primary" ng-click="doEdit()">Izmeni</button>
+				
+			</form>
+		
+		</div>
+	</div>
+</div>
