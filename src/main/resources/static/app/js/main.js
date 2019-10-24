@@ -4,22 +4,24 @@ cmsApp.controller("homeCtrl", function($scope){
 	$scope.message = "Hello CMS Software!";
 });
 
-cmsApp.controller("registerCtrl", function($scope, $http, $location) {
+cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParams) {
 		
 	var registerUrl = "/api/users";
 	$scope.newUser = {};
-	$scope.newUser.exampleFirstName = "";
-	$scope.newUser.exampleLastName = "";
-	$scope.newUser.exampleInputEmail = "";
-	$scope.newUser.exampleUserName = "";
-	$scope.newUser.exampleInputPassword = "";
-	$scope.newUser.exampleRepeatPassword = "";
+	$scope.newUser.firstName = "";
+	$scope.newUser.lastName = "";
+	$scope.newUser.email = "";
+	$scope.newUser.userName = "";
+	$scope.newUser.password = "";
+	$scope.newUser.passwordConfirm = "";
 	
 	$scope.doAdd = function(){
 		
 		$http.post(registerUrl, $scope.newUser).then(
 			function success(){
+				$location.path("/home")
 				alert("We will send email confirmation")
+				
 			},
 			function error(){
 				alert("Neuspešno čuvanje linije!");
