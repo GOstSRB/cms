@@ -32,6 +32,7 @@ public class UserDTOToUser implements Converter<UserDTO, User>{
 		user.setUserName(dto.getUsername());
 		user.setFirstName(dto.getFirstname());
 		user.setLastName(dto.getLastname());
+		user.setPassword(dto.getPassword());
 		
 		return user;
 	}

@@ -1,5 +1,7 @@
 package no.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +38,18 @@ public class JpaUserService implements UserService {
 
 	@Override
 	public Page<User> findAll(int page) {
-		// TODO Auto-generated method stub
 		return userRepository.findAll(new PageRequest(page, 10));
+	}
+
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User findByUserNameAndPassword(String username, String password) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUserNameAndPassword(username, password);
 	}
 
 }

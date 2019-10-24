@@ -36,7 +36,7 @@ public class User {
 	private String password;
 	
 	// Field Technician, Service, HR, Admin, Inspections, Projects, Operations, Customer
-	@Column(name="typeOfUser", nullable=false)
+	@Column(name="typeOfUser")
 	private String typeOfUser;
 	
 	@Column(name="phone")

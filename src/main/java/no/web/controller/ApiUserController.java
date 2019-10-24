@@ -36,6 +36,7 @@ public class ApiUserController {
 	@Autowired
 	private UserToUserDTO toDto;
 	
+
 	@RequestMapping(method=RequestMethod.GET)
 	ResponseEntity<List<UserDTO>> getUser(
 			@RequestParam(defaultValue="0") int page){

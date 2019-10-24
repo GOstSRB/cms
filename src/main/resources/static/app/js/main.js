@@ -4,6 +4,30 @@ cmsApp.controller("homeCtrl", function($scope){
 	$scope.message = "Hello CMS Software!";
 });
 
+cmsApp.controller("registerCtrl", function($scope, $http, $location) {
+		
+	var registerUrl = "/api/users";
+	$scope.newUser = {};
+	$scope.newUser.exampleFirstName = "";
+	$scope.newUser.exampleLastName = "";
+	$scope.newUser.exampleInputEmail = "";
+	$scope.newUser.exampleUserName = "";
+	$scope.newUser.exampleInputPassword = "";
+	$scope.newUser.exampleRepeatPassword = "";
+	
+	$scope.doAdd = function(){
+		
+		$http.post(registerUrl, $scope.newUser).then(
+			function success(){
+				alert("We will send email confirmation")
+			},
+			function error(){
+				alert("Neuspešno čuvanje linije!");
+			}
+		);
+	}
+	
+});
 
 cmsApp.controller("itemCtrl", function($scope, $http, $location){
 	

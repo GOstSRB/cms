@@ -36,6 +36,7 @@ public class TestData {
 		u1.setLastName("Petrovic");
 		u1.setUserName("petko");
 		u1.setPassword("1111");
+		u1.setEmail("em@em.com");
 		u1.setTypeOfUser("Field Technician");
 		u1.setTeamMemberSince("01/01/2019");
 		u1.setCurrentWageHr("10");
