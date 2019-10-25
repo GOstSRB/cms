@@ -1,0 +1,85 @@
+<div ng-controller="editUserCtrl">
+	<h1>Edit user</h1>
+	
+	<div class="row">
+				
+		<div class="col-12 col-lg-5">
+		<div class="p-5">
+						<div class="text-center">
+							<h1 class="h4 text-gray-900 mb-4">Edit an Account!</h1>
+						</div>
+			<form class="edit-user">
+
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="firstName">User First Name</label>
+					<input id="firstName" class="form-control" ng-model="user.firstName"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="lastName">User Last Name</label>
+					<input id="lastName" class="form-control" ng-model="user.lastName"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="email">User email Name</label>
+					<input id="email" class="form-control" ng-model="user.email"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="userName">User userName</label>
+					<input id="userName" class="form-control" ng-model="user.userName"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="password">User Password</label>
+					<input id="password" class="form-control" ng-model="user.password"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="passwordRepeat">User Password Repeat</label>
+					<input id="passwordRepeat" class="form-control" ng-model="user.passwordRepeat"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="typeOfUser">Type of User</label>
+					<input id="typeOfUser" class="form-control" ng-model="user.typeOfUser"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="phone">User phone</label>
+					<input id="phone" class="form-control" ng-model="user.phone"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="misc1">Misc1</label>
+					<input id="misc1" class="form-control" ng-model="user.misc1"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="misc2">Misc2</label>
+					<input id="misc2" class="form-control" ng-model="user.misc2"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="misc3">Misc3</label>
+					<input id="misc3" class="form-control" ng-model="user.misc3"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="teamMemberSince">Team Member Since</label>
+					<input id="teamMemberSince" class="form-control" ng-model="user.teamMemberSince"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="currentWageHr">Current Wage Hr</label>
+					<input id="currentWageHr" class="form-control" ng-model="user.currentWageHr"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="currentWageAnnual">Current Wage Annual</label>
+					<input id="currentWageAnnual" class="form-control" ng-model="user.currentWageAnnual"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="vacation">Vacation</label>
+					<input id="vacation" class="form-control" ng-model="user.vacation"/>
+				</div>
+				<div class="form-group row" class="form-control form-control-user">
+					<label for="sick">Sick</label>
+					<input id="sick" class="form-control" ng-model="user.sick"/>
+				</div>
+				
+							
+				<button class="btn btn-primary" ng-click="doEdit()">Edit</button>
+				
+			</form>
+		
+		</div>
+	</div>
+</div>

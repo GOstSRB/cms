@@ -30,6 +30,32 @@ cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParam
 	}
 	
 });
+cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParams) {
+	
+	var registerUrl = "/api/users";
+	$scope.newUser = {};
+	$scope.newUser.firstName = "";
+	$scope.newUser.lastName = "";
+	$scope.newUser.email = "";
+	$scope.newUser.userName = "";
+	$scope.newUser.password = "";
+	$scope.newUser.passwordConfirm = "";
+	
+	$scope.doAdd = function(){
+		
+		$http.post(registerUrl, $scope.newUser).then(
+			function success(){
+				$location.path("/home")
+				alert("We will send email confirmation")
+				
+			},
+			function error(){
+				alert("Neuspešno čuvanje linije!");
+			}
+		);
+	}
+	
+});
 
 cmsApp.controller("itemCtrl", function($scope, $http, $location){
 	
@@ -234,6 +260,9 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/register', {
 			templateUrl : '/app/html/register.html'
+		})
+		.when('/edit-user', {
+			templateUrl : '/app/html/edit-user.html'
 		})
 		.when('/forgot-password', {
 			templateUrl : '/app/html/forgot-password.html'

@@ -48,7 +48,6 @@ public class JpaUserService implements UserService {
 
 	@Override
 	public User findByUserNameAndPassword(String username, String password) {
-		// TODO Auto-generated method stub
 		return userRepository.findByUserNameAndPassword(username, password);
 	}
 

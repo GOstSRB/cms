@@ -21,7 +21,18 @@ UserDTO dto = new UserDTO();
 		dto.setLastname(user.getLastName());
 		dto.setEmail(user.getEmail());
 		dto.setUsername(user.getUserName());
-		dto.setPassword(user.getPassword());
+//		dto.setPassword(user.getPassword());
+		
+		dto.setTypeOfUser(user.getTypeOfUser());
+		dto.setPhone(user.getPhone());
+		dto.setMisc1(user.getMisc1());
+		dto.setMisc2(user.getMisc2());
+		dto.setMisc3(user.getMisc3());
+		dto.setTeamMemberSince(user.getTeamMemberSince());
+		dto.setCurrentWageHr(user.getCurrentWageHr());
+		dto.setCurrentWageAnnual(user.getCurrentWageAnnual());
+		dto.setVacation(user.getVacation());
+		dto.setSick(user.getSick());
 		
 		return dto;
 	}

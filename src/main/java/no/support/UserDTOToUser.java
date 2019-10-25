@@ -34,6 +34,17 @@ public class UserDTOToUser implements Converter<UserDTO, User>{
 		user.setLastName(dto.getLastname());
 		user.setPassword(dto.getPassword());
 		
+		user.setTypeOfUser(dto.getTypeOfUser());
+		user.setPhone(dto.getPhone());
+		user.setMisc1(dto.getMisc1());
+		user.setMisc2(dto.getMisc2());
+		user.setMisc3(dto.getMisc3());
+		user.setTeamMemberSince(dto.getTeamMemberSince());
+		user.setCurrentWageHr(dto.getCurrentWageHr());
+		user.setCurrentWageAnnual(dto.getCurrentWageAnnual());
+		user.setVacation(dto.getVacation());
+		user.setSick(dto.getSick());
+		
 		return user;
 	}
 	
