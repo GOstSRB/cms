@@ -60,27 +60,7 @@ cmsApp.controller("userCtrl", function($scope, $http, $location){
 	
 	getUsers();
 //	console.log($scope.users);
-	$scope.doAdd = function(){
 		
-		$http.post(usersUrl, $scope.newUser).then(
-			function success(){
-				getUsers();
-				
-				$scope.newUser = {};
-				$scope.newUser.firstName = "";
-				$scope.newUser.lastName = "";
-				$scope.newUser.email = "";
-				$scope.newUser.userName = "";
-				$scope.newUser.password = "";
-				$scope.newUser.passwordConfirm = "";
-				
-			},
-			function error(){
-				alert("Unsuccessful save of user!");
-			}
-		);
-	}
-	
 	$scope.doDelete = function(id){
 		var promise = $http.delete(usersUrl + "/" + id);
 		promise.then(
@@ -128,7 +108,7 @@ cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParam
 				
 			},
 			function error(){
-				alert("Neuspešno čuvanje linije!");
+				alert("Unsuccessful save of user!");
 			}
 		);
 	}
@@ -137,20 +117,32 @@ cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParam
 cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParams) {
 	
 	var url = "/api/users/"+ $routeParams.id;
+	
 	$scope.user = {};
 	$scope.user.firstname = "";
 	$scope.user.lastname = "";
 	$scope.user.email = "";
 	$scope.user.username = "";
-	$scope.user.password = "";
-	$scope.user.passwordConfirm = "";
+	$scope.user.typeOfUser = "";
+//	$scope.user.password = "";
+//	$scope.user.passwordConfirm = "";
+	$scope.user.phone = "";
+	$scope.user.misc1 = "";
+	$scope.user.misc2 = "";
+	$scope.user.misc3 = "";
+	$scope.user.teamMemberSince = "";
+	$scope.user.currentWageHr = "";
+	$scope.user.currentWageAnnual = "";
+	$scope.user.vacation = "";
+	$scope.user.sick = "";
+	
 	
 	var getUser = function() {
 		var promise = $http.get(url);
 		promise.then(
 				function succes(res){
 					$scope.user = res.data;
-					console.log(res);
+//					console.log(res);
 				},
 				function error() {
 					alert("Couldn't fetch user.")
@@ -160,16 +152,14 @@ cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParam
 	getUser();
 	
 	
-	$scope.doAdd = function(){
+	$scope.doEdit = function(){
 		
-		$http.post(registerUrl, $scope.newUser).then(
+		$http.put(url, $scope.user).then(
 			function success(){
-				$location.path("/home")
-				alert("We will send email confirmation")
-				
+				$location.path("/users");				
 			},
 			function error(){
-				alert("Neuspešno čuvanje linije!");
+				alert("Unsuccessful save of user!");
 			}
 		);
 	}
@@ -388,6 +378,9 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/forgot-password', {
 			templateUrl : '/app/html/forgot-password.html'
+		})
+		.when('/items', {
+			templateUrl : '/app/html/items.html'
 		})
 		.when('/linije', {
 			templateUrl : '/app/html/linije.html'
