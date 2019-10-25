@@ -4,6 +4,110 @@ cmsApp.controller("homeCtrl", function($scope){
 	$scope.message = "Hello CMS Software!";
 });
 
+cmsApp.controller("userCtrl", function($scope, $http, $location){
+	
+	$scope.users = [];
+	
+	$scope.newUser = {};
+	$scope.newUser.firstName = "";
+	$scope.newUser.lastName = "";
+	$scope.newUser.email = "";
+	$scope.newUser.userName = "";
+	$scope.newUser.password = "";
+	$scope.newUser.passwordConfirm = "";
+	
+	$scope.searchParams = {};
+	$scope.searchParams.firstname = "";
+	$scope.searchParams.lastname = "";
+	$scope.searchParams.username = "";
+	
+	$scope.pageNum = 0;
+	$scope.totalPages = 1
+	
+	var usersUrl = "/api/users";
+	
+		var getUsers = function(){
+		var config = { params: {} };		
+		
+		if($scope.searchParams.firstname != ""){
+			config.params.firstname = $scope.searchParams.firstname;
+		}
+		
+		if($scope.searchParams.lastname != ""){
+			config.params.lastname = $scope.searchParams.lastname;
+		}
+//		look fields!!!!!!!!!!!!!!!!!!!!
+		if($scope.searchParams.username != ""){
+			config.params.maksCena = $scope.searchParams.cenaKarte;
+		}
+		if($scope.searchParams.cenaKarte != ""){
+			config.params.maksCena = $scope.searchParams.cenaKarte;
+		}
+		
+		config.params.pageNum = $scope.pageNum;
+		
+		$http.get(usersUrl, config).then(
+			function success(res){
+				$scope.users = res.data;
+				$scope.totalPages = res.headers("totalPages");
+//				console.log(res);
+			},
+			function error(){
+				alert("Unsuccessful geting users.");
+			}
+		);
+	}
+	
+	getUsers();
+//	console.log($scope.users);
+	$scope.doAdd = function(){
+		
+		$http.post(usersUrl, $scope.newUser).then(
+			function success(){
+				getUsers();
+				
+				$scope.newUser = {};
+				$scope.newUser.firstName = "";
+				$scope.newUser.lastName = "";
+				$scope.newUser.email = "";
+				$scope.newUser.userName = "";
+				$scope.newUser.password = "";
+				$scope.newUser.passwordConfirm = "";
+				
+			},
+			function error(){
+				alert("Unsuccessful save of user!");
+			}
+		);
+	}
+	
+	$scope.doDelete = function(id){
+		var promise = $http.delete(usersUrl + "/" + id);
+		promise.then(
+			function success(){
+				getUsers();
+			},
+			function error(){
+				alert("Neuspešno brisanje linije.");
+			}
+		);
+	}
+	
+	$scope.goToEdit = function(id){
+		$location.path("/users/edit/" + id);
+	}
+	
+	$scope.changePage = function(direction){
+		$scope.pageNum = $scope.pageNum + direction;
+		getUsers();
+	}
+	
+	$scope.doSearch = function(){
+		$scope.pageNum = 0;
+		getUsers();
+	}	
+});
+
 cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParams) {
 		
 	var registerUrl = "/api/users";
@@ -32,14 +136,29 @@ cmsApp.controller("registerCtrl", function($scope, $http, $location, $routeParam
 });
 cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParams) {
 	
-	var registerUrl = "/api/users";
-	$scope.newUser = {};
-	$scope.newUser.firstName = "";
-	$scope.newUser.lastName = "";
-	$scope.newUser.email = "";
-	$scope.newUser.userName = "";
-	$scope.newUser.password = "";
-	$scope.newUser.passwordConfirm = "";
+	var url = "/api/users/"+ $routeParams.id;
+	$scope.user = {};
+	$scope.user.firstname = "";
+	$scope.user.lastname = "";
+	$scope.user.email = "";
+	$scope.user.username = "";
+	$scope.user.password = "";
+	$scope.user.passwordConfirm = "";
+	
+	var getUser = function() {
+		var promise = $http.get(url);
+		promise.then(
+				function succes(res){
+					$scope.user = res.data;
+					console.log(res);
+				},
+				function error() {
+					alert("Couldn't fetch user.")
+				}
+		);
+	}
+	getUser();
+	
 	
 	$scope.doAdd = function(){
 		
@@ -57,7 +176,7 @@ cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParam
 	
 });
 
-cmsApp.controller("itemCtrl", function($scope, $http, $location){
+cmsApp.controller("linijaCtrl", function($scope, $http, $location){
 	
 	$scope.linije = [];
 	$scope.prevoznici = [];
@@ -261,7 +380,10 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		.when('/register', {
 			templateUrl : '/app/html/register.html'
 		})
-		.when('/edit-user', {
+		.when('/users', {
+			templateUrl : '/app/html/users.html'
+		})
+		.when('/users/edit/:id', {
 			templateUrl : '/app/html/edit-user.html'
 		})
 		.when('/forgot-password', {
