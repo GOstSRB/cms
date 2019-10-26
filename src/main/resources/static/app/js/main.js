@@ -36,7 +36,7 @@ cmsApp.controller("userCtrl", function($scope, $http, $location){
 		if($scope.searchParams.lastname != ""){
 			config.params.lastname = $scope.searchParams.lastname;
 		}
-//		look fields!!!!!!!!!!!!!!!!!!!!
+// look fields!!!!!!!!!!!!!!!!!!!!
 		if($scope.searchParams.username != ""){
 			config.params.maksCena = $scope.searchParams.cenaKarte;
 		}
@@ -50,7 +50,7 @@ cmsApp.controller("userCtrl", function($scope, $http, $location){
 			function success(res){
 				$scope.users = res.data;
 				$scope.totalPages = res.headers("totalPages");
-//				console.log(res);
+// console.log(res);
 			},
 			function error(){
 				alert("Unsuccessful geting users.");
@@ -59,7 +59,7 @@ cmsApp.controller("userCtrl", function($scope, $http, $location){
 	}
 	
 	getUsers();
-//	console.log($scope.users);
+// console.log($scope.users);
 		
 	$scope.doDelete = function(id){
 		var promise = $http.delete(usersUrl + "/" + id);
@@ -124,8 +124,8 @@ cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParam
 	$scope.user.email = "";
 	$scope.user.username = "";
 	$scope.user.typeOfUser = "";
-//	$scope.user.password = "";
-//	$scope.user.passwordConfirm = "";
+// $scope.user.password = "";
+// $scope.user.passwordConfirm = "";
 	$scope.user.phone = "";
 	$scope.user.misc1 = "";
 	$scope.user.misc2 = "";
@@ -142,7 +142,7 @@ cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParam
 		promise.then(
 				function succes(res){
 					$scope.user = res.data;
-//					console.log(res);
+// console.log(res);
 				},
 				function error() {
 					alert("Couldn't fetch user.")
@@ -165,6 +165,173 @@ cmsApp.controller("editUserCtrl", function($scope, $http, $location, $routeParam
 	}
 	
 });
+
+cmsApp.controller("itemCtrl", function($scope, $http, $location){
+	
+	$scope.items = [];
+	
+	$scope.item = {};
+	$scope.item.partType = "";
+	$scope.item.partName = "";
+	$scope.item.partNumber = "";
+	$scope.item.partPrice = "";
+	$scope.item.quantity = "";
+
+// $scope.newLinija.prevoznikId = "";
+	
+	$scope.searchParams = {};
+	$scope.searchParams.destinacija = "";
+	$scope.searchParams.prevoznikId = "";
+	$scope.searchParams.cenaKarte = "";
+	
+	$scope.pageNum = 0;
+	$scope.totalPages = 1
+	
+	var itemUrl = "/api/items";
+		
+	var getItems = function(){
+		
+		var config = { params: {} };		
+		
+		if($scope.searchParams.destinacija != ""){
+			config.params.destinacija = $scope.searchParams.destinacija;
+		}
+		
+		if($scope.searchParams.prevoznikId != ""){
+			config.params.prevoznikId = $scope.searchParams.prevoznikId;
+		}
+		
+		if($scope.searchParams.cenaKarte != ""){
+			config.params.maksCena = $scope.searchParams.cenaKarte;
+		}
+		
+		config.params.pageNum = $scope.pageNum;
+		
+		$http.get(itemUrl, config).then(
+			function success(res){
+				$scope.items = res.data;
+				$scope.totalPages = res.headers("totalPages");
+				console.log(res);
+			},
+			function error(){
+				alert("Neupešno dobavljanje item.");
+			}
+		);
+	}
+	
+	getItems();
+	
+	$scope.doAdd = function(){
+		
+		$http.post(itemUrl, $scope.item).then(
+			function success(){
+				getItems();
+				
+				$scope.item = {};
+				$scope.item.partType = "";
+				$scope.item.partName = "";
+				$scope.item.partNumber = "";
+				$scope.item.partPrice = "";
+				$scope.item.quantity = "";
+			},
+			function error(){
+				alert("Neuspešno čuvanje linije!");
+			}
+		);
+	}
+	
+	$scope.doDelete = function(id){
+		var promise = $http.delete(itemUrl + "/" + id);
+		promise.then(
+			function success(){
+				getItems();
+			},
+			function error(){
+				alert("Neuspešno brisanje linije.");
+			}
+		);
+	}
+	
+	$scope.goToEdit = function(id){
+		$location.path("/items/edit/" + id);
+	}
+	
+// $scope.changePage = function(direction){
+// $scope.pageNum = $scope.pageNum + direction;
+// getLinije();
+// }
+//	
+// $scope.doSearch = function(){
+// $scope.pageNum = 0;
+// getLinije();
+// }
+//	
+// $scope.doReserve = function(id){
+// var promise = $http.post(linijeUrl + "/" + id);
+// promise.then(
+// function success(){
+// alert("Uspešno rezervisano mesto.")
+// getLinije();
+// },
+// function error(){
+// alert("Neuspešna rezervacija.");
+// getLinije();
+// }
+// );
+// }
+	
+});
+
+cmsApp.controller("editItemCtrl", function($scope, $http, $location, $routeParams) {
+	
+	var url = "/api/items/"+ $routeParams.id;
+	
+	$scope.item = {};
+	$scope.item.partType = "";
+	$scope.item.partName = "";
+	$scope.item.partNumber = "";
+	$scope.item.partPrice = "";
+	$scope.item.quantity = "";
+	
+	
+	var getItem = function() {
+		var promise = $http.get(url);
+		promise.then(
+				function succes(res){
+					$scope.item = res.data;
+// console.log(res);
+				},
+				function error() {
+					alert("Couldn't fetch user.")
+				}
+		);
+	}
+	getItem();
+	
+	
+	$scope.doEdit = function(){
+		
+		$http.put(url, $scope.item).then(
+			function success(){
+				$location.path("/items");				
+			},
+			function error(){
+				alert("Unsuccessful save of user!");
+			}
+		);
+	}
+	
+});
+
+
+
+
+
+
+
+
+
+
 
 cmsApp.controller("linijaCtrl", function($scope, $http, $location){
 	
@@ -338,9 +505,11 @@ cmsApp.controller("editLinijaCtrl", function($scope, $http, $routeParams, $locat
 			}
 		);
 	}
-	//Ako bismo želeli da radimo kaskadiranje radi omogućavanja ng-selected odabira prevoznika,
-	//onda bismo ovo morali da prebacimo u success callback pod getPrevoznici. Tu je izostavljen
-	//taj mehanizam radi jednostavnosti.
+	// Ako bismo želeli da radimo kaskadiranje radi omogućavanja ng-selected
+	// odabira prevoznika,
+	// onda bismo ovo morali da prebacimo u success callback pod getPrevoznici.
+	// Tu je izostavljen
+	// taj mehanizam radi jednostavnosti.
 	getLinija();
 	
 	
@@ -381,6 +550,9 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/items', {
 			templateUrl : '/app/html/items.html'
+		})
+		.when('/items/edit/:id', {
+			templateUrl : '/app/html/edit-item.html'
 		})
 		.when('/linije', {
 			templateUrl : '/app/html/linije.html'

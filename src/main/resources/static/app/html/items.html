@@ -1,4 +1,4 @@
-<div ng-controller="itemsCtrl">
+<div ng-controller="itemCtrl">
 	<h1>Items</h1>
 	<form
 		class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
@@ -16,7 +16,7 @@
 		<input ng-model="searchParams.firstname" class="form-control"
 			id="sfname">
 			<button class="btn btn-info" ng-click="doSearch()">Search</button>
-</div>
+
 
 
 </form>
@@ -41,7 +41,7 @@
 		<label for="quantity">Quantity</label> <input id="quantity"
 			class="form-control" ng-model="item.quantity" />
 	</div>
-	<button class="btn btn-primary" ng-click="doAdd()">Izmeni</button>
+	<button class="btn btn-primary" ng-click="doAdd()">Add part item</button>
 </form>
 
 <div class="btn-group float-right">
@@ -71,8 +71,8 @@
 			<td>{{i.partPrice}}</td>
 			<td>{{i.quantity}}</td>
 
-			<td><button ng-click="goToEdit(u.id)">Edit</button></td>
-			<td><button ng-click="doDelete(u.id)">Delete</button></td>
+			<td><button ng-click="goToEdit(i.id)">Edit</button></td>
+			<td><button ng-click="doDelete(i.id)">Delete</button></td>
 		</tr>
 	</tbody>
 </table>

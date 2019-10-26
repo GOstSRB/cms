@@ -26,7 +26,7 @@ public class JpaItemService implements ItemService {
 		
 		Item item = itemRepository.findOne(id);
 		if(item != null) {
-			itemRepository.save(item);
+			itemRepository.delete(id);
 		}
 		return item;
 	}
