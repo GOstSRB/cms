@@ -1,0 +1,84 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+ 
+#wrapp{
+    width: 100%;
+   	margin: 10px auto;  
+    position: relative;
+    
+    
+}
+#wrapp div{
+    float: left;
+    text-align: center;
+    margin:0.5%;
+   
+    
+}
+#b1{
+    width: 325px;
+    height: 120px;
+    color: black;
+}
+#b2{
+    width: 325px;
+    height: 120px;
+    color: black;
+}
+#b3{
+    width: 325px;
+    height: 120px;
+	color: black;
+}
+h3{
+   text-align: center;
+    clear: both;
+}
+h4{
+    clear: both;
+    text-align: center;
+}
+h5{
+    clear: both;
+    text-align: center;
+}
+#button{
+	clear: both;
+	width: auto;
+    height: 200px;
+    text-align:center;
+    margin: 400px 0 0 0;  
+    position: relative;
+    
+}
+
+
+h2{
+    text-align: center
+}
+#butt{
+    text-align:center;
+}
+.but{
+    background-color: rgb(108, 202, 194);
+    padding: 10px;
+    
+}
+#calendar{
+    width: 400px;
+    height: 200px;
+    text-align:center;
+    margin: 50px auto; 
+    position: relative;
+    border: 1px solid silver;
+    
+}
+.search{
+    margin: 50px auto; 
+    position: relative;
+    text-align:left;
+    width: 400px;
+}
