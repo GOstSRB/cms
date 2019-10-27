@@ -211,7 +211,7 @@ cmsApp.controller("itemCtrl", function($scope, $http, $location){
 			function success(res){
 				$scope.items = res.data;
 				$scope.totalPages = res.headers("totalPages");
-				console.log(res);
+// console.log(res);
 			},
 			function error(){
 				alert("Neupešno dobavljanje item.");
@@ -235,7 +235,7 @@ cmsApp.controller("itemCtrl", function($scope, $http, $location){
 				$scope.item.quantity = "";
 			},
 			function error(){
-				alert("Neuspešno čuvanje linije!");
+				alert("Neuspešno čuvanje item!");
 			}
 		);
 	}
@@ -247,7 +247,7 @@ cmsApp.controller("itemCtrl", function($scope, $http, $location){
 				getItems();
 			},
 			function error(){
-				alert("Neuspešno brisanje linije.");
+				alert("Neuspešno brisanje item.");
 			}
 		);
 	}
@@ -256,29 +256,17 @@ cmsApp.controller("itemCtrl", function($scope, $http, $location){
 		$location.path("/items/edit/" + id);
 	}
 	
-// $scope.changePage = function(direction){
-// $scope.pageNum = $scope.pageNum + direction;
-// getLinije();
-// }
-//	
-// $scope.doSearch = function(){
-// $scope.pageNum = 0;
-// getLinije();
-// }
-//	
-// $scope.doReserve = function(id){
-// var promise = $http.post(linijeUrl + "/" + id);
-// promise.then(
-// function success(){
-// alert("Uspešno rezervisano mesto.")
-// getLinije();
-// },
-// function error(){
-// alert("Neuspešna rezervacija.");
-// getLinije();
-// }
-// );
-// }
+	$scope.changePage = function(direction){
+		$scope.pageNum = $scope.pageNum + direction;
+	getItems();
+	}
+	
+	$scope.doSearch = function(){
+		$scope.pageNum = 0;
+	getItems();
+	}
+	
+
 	
 });
 
@@ -302,7 +290,7 @@ cmsApp.controller("editItemCtrl", function($scope, $http, $location, $routeParam
 // console.log(res);
 				},
 				function error() {
-					alert("Couldn't fetch user.")
+					alert("Couldn't fetch item.")
 				}
 		);
 	}
@@ -316,7 +304,7 @@ cmsApp.controller("editItemCtrl", function($scope, $http, $location, $routeParam
 				$location.path("/items");				
 			},
 			function error(){
-				alert("Unsuccessful save of user!");
+				alert("Unsuccessful save of item!");
 			}
 		);
 	}
@@ -550,6 +538,9 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/items', {
 			templateUrl : '/app/html/items.html'
+		})
+		.when('/workOrders', {
+			templateUrl : '/app/html/dashboard-team-member-service.htm'
 		})
 		.when('/items/edit/:id', {
 			templateUrl : '/app/html/edit-item.html'
