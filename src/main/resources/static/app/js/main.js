@@ -527,6 +527,53 @@ cmsApp.controller("editLinijaCtrl", function($scope, $http, $routeParams, $locat
 
 
 
+
+cmsApp.controller("dashboardCtrl", function($scope, $http, $location){
+	
+	//url
+	var baseUrlWorkOrder = "/api/dashboard";
+	$scope.pageNum = 0;
+	$scope.totalPages = 0;
+	$scope.workOrder = [];
+	
+	var getWorkOrder = function(){
+		var config = {params: {}};
+		config.params.pageNum = $scope.pageNum;
+		
+		$http.get(baseUrlWorkOrder, config)
+		.then(
+				function uspeh(res){
+				$scope.workOrder = res.data;
+				$scope.totalPages = res.headers('totalPages');
+				console.log(res);
+				},
+				function neuspeh(res){
+					alert("Cant find workorder");
+				}
+		);
+	};
+	getWorkOrder();
+	
+	//NAZAD-BUTTON(copy-paste)
+	$scope.nazad = function(){
+	    if($scope.pageNum > 0) {
+	        $scope.pageNum = $scope.pageNum - 1;
+	        getWorkOrder();
+	    }
+	};
+
+	//NAPRED-BUTTON(copy-paste)
+	$scope.napred = function(){
+	    if($scope.pageNum < $scope.totalPages - 1){
+	        $scope.pageNum = $scope.pageNum + 1;
+	        getWorkOrder();
+	    }
+	};
+	
+});
+
+
+
 cmsApp.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
@@ -559,6 +606,9 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/linije/edit/:id', {
 			templateUrl : '/app/html/edit-linija.html'
+		})
+		.when('/dashboard', {
+			templateUrl : '/app/html/dashboard.html'
 		})
 		.otherwise({
 			redirectTo: '/'

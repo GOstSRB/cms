@@ -36,7 +36,6 @@ public class TestData {
 		u1.setLastName("Petrovic");
 		u1.setUserName("petko");
 		u1.setPassword("1111");
-		u1.setEmail("em@em.com");
 		u1.setTypeOfUser("Field Technician");
 		u1.setTeamMemberSince("01/01/2019");
 		u1.setCurrentWageHr("10");
@@ -188,6 +187,111 @@ public class TestData {
 		w1.setWorkOrderName("Liman");
 		w1.setWorkOrderPhone("000111222");
 		workorderService.save(w1);
+		
+
+		WorkOrder w2 = new WorkOrder();
+
+		w2.setAdditionalComments("no comment");
+		w2.setArrivalTime("01/01/2109");
+		w2.setDate("01/03/2019");
+		w2.setDepartueTime("05:00");
+
+//		w2.addItem(i4);
+		w2.setStatus("Completed");
+		w2.setUser(u2);
+		w2.setWorkOrderName("Grbavica");
+		w2.setWorkOrderPhone("000111222");
+		workorderService.save(w2);
+		
+		
+		WorkOrder w3 = new WorkOrder();
+
+		w3.setAdditionalComments("no comment");
+		w3.setArrivalTime("01/04/2109");
+		w3.setDate("01/04/2019");
+		w3.setDepartueTime("05:00");
+
+//		w3.addItem(i4);
+		w3.setStatus("Accepted");
+		w3.setUser(u1);
+		w3.setWorkOrderName("Novo Naselje");
+		w3.setWorkOrderPhone("000111222");
+		workorderService.save(w3);
+		
+
+		WorkOrder w4 = new WorkOrder();
+
+		w4.setAdditionalComments("no comment");
+		w4.setArrivalTime("01/05/2109");
+		w4.setDate("01/05/2019");
+		w4.setDepartueTime("05:00");
+
+//		w4.addItem(i4);
+		w4.setStatus("Accepted");
+		w4.setUser(u2);
+		w4.setWorkOrderName("Centar");
+		w4.setWorkOrderPhone("000111222");
+		workorderService.save(w4);
+		
+		WorkOrder w5 = new WorkOrder();
+
+		w5.setAdditionalComments("no comment");
+		w5.setArrivalTime("01/06/2109");
+		w5.setDate("01/06/2019");
+		w5.setDepartueTime("05:00");
+
+//		w5.addItem(i5);
+		w5.setStatus("Completed");
+		w5.setUser(u1);
+		w5.setWorkOrderName("Rumenka");
+		w5.setWorkOrderPhone("000111222");
+		workorderService.save(w5);
+		
+
+		WorkOrder w6 = new WorkOrder();
+
+		w6.setAdditionalComments("no comment");
+		w6.setArrivalTime("01/07/2109");
+		w6.setDate("01/07/2019");
+		w6.setDepartueTime("05:00");
+
+//		w6.addItem(i6);
+		w6.setStatus("Completed");
+		w6.setUser(u2);
+		w6.setWorkOrderName("Novi Sad");
+		w6.setWorkOrderPhone("000111222");
+		workorderService.save(w6);
+		
+		WorkOrder w7 = new WorkOrder();
+
+		w7.setAdditionalComments("no comment");
+		w7.setArrivalTime("01/08/2109");
+		w7.setDate("01/07/2000");
+		w7.setDepartueTime("05:00");
+
+//		w7.addItem(i5);
+		w7.setStatus("Completed");
+		w7.setUser(u1);
+		w7.setWorkOrderName("Rumenka");
+		w7.setWorkOrderPhone("000111222");
+		workorderService.save(w7);
+		
+
+		WorkOrder w8 = new WorkOrder();
+
+		w8.setAdditionalComments("no comment");
+		w8.setArrivalTime("01/01/2109");
+		w8.setDate("01/05/2015");
+		w8.setDepartueTime("05:00");
+
+//		w8.addItem(i6);
+		w8.setStatus("Open");
+		w8.setUser(u2);
+		w8.setWorkOrderName("Novi Sad");
+		w8.setWorkOrderPhone("000111222");
+		workorderService.save(w8);
+		
+		
 		
 		
 		

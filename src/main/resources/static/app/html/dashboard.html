@@ -1,0 +1,75 @@
+<div class="container" ng-controller="dashboardCtrl">
+
+	<h2>Team Member Dashboard - Field Tech</h2>
+	<div id="butt">
+		<button class="but"><a href="#">My Info Button</a></button>
+		<button class="but"><a href="https://www.cms-compass.com/Account/Login?ReturnUrl=%2FDashboard#/AccountStatistics">CMS Button</a></button>
+		<button class="but">Manuals Button</button>
+		<button class="but">Van Stock Sheet</button>
+	</div>
+	<div id="calendar">My Calendar</div>
+	<div class="search">
+		<span>Customer Search</span> <input type="text"
+			placeholder="name, address, accnt #. etc">
+	</div>
+
+	<div id="wrapp">
+
+		<h3>Work orders</h3>
+		<div id="b1">
+			<h6>Open Work Order</h6>
+			<table class="table table-striped">
+			
+			<tr ng-repeat="a in workOrder | filter:{ status: 'Open'} | orderBy:'+date'" >
+				<td>{{a.date}}</td>
+				<td>{{a.workOrderName}}</td>
+				<td>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+			</td>
+			</tr>
+			</table>
+			
+		</div>
+		<div id="b2">
+			<h6>Accepted Work Order</h6>
+			<table class="table table-striped">
+			
+			<tr ng-repeat="a in workOrder | filter:{ status: 'Accepted'} | orderBy:'+date'">
+				<td>{{a.date}}</td>
+				<td>{{a.workOrderName}}</td>
+				<td>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+			</td>
+			</tr>
+			</table>
+		</div>
+		<div id="b3">
+			<h6>Completed</h6>
+			<table class="table table-striped">
+			
+			<tr ng-repeat="a in workOrder | filter:{ status: 'Completed'} | orderBy:'+date'">
+				<td>{{a.date}}</td>
+				<td>{{a.workOrderName}}</td>
+				<td>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+			</td>
+			</tr>
+			</table>
+		</div>
+		
+		
+	</div>
+	<div id="button">
+		<h5>View Complete List</h5>
+		<button class="btn btn-primary" ng-click="nazad()" ng-disabled="pageNum == 0">Prethodna</button>
+		<button class="btn btn-primary" ng-click="napred()" ng-disabled="pageNum == totalPages - 1">Sledeća</button>
+	
+	</div>
+	<h4>
+		<a href="#">Projects</a>
+	</h4>
+
+</div>
