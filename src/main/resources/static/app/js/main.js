@@ -311,6 +311,138 @@ cmsApp.controller("editItemCtrl", function($scope, $http, $location, $routeParam
 	
 });
 
+cmsApp.controller("workOrderCtrl", function($scope, $http, $location){
+	
+	$scope.linije = [];
+	$scope.prevoznici = [];
+
+	$scope.newLinija = {};
+	$scope.newLinija.brojMesta = "";
+	$scope.newLinija.cenaKarte = "";
+	$scope.newLinija.vremePolaska = "";
+	$scope.newLinija.destinacija = "";
+
+	$scope.newLinija.prevoznikId = "";
+	
+	$scope.searchParams = {};
+	$scope.searchParams.destinacija = "";
+	$scope.searchParams.prevoznikId = "";
+	$scope.searchParams.cenaKarte = "";
+	
+	$scope.pageNum = 0;
+	$scope.totalPages = 1
+	
+	var workOrdersUrl = "/api/workorders";
+	var prevozniciUrl = "/api/prevoznici";
+	
+	var getLinije = function(){
+		
+		var config = { params: {} };		
+		
+		if($scope.searchParams.destinacija != ""){
+			config.params.destinacija = $scope.searchParams.destinacija;
+		}
+		
+		if($scope.searchParams.prevoznikId != ""){
+			config.params.prevoznikId = $scope.searchParams.prevoznikId;
+		}
+		
+		if($scope.searchParams.cenaKarte != ""){
+			config.params.maksCena = $scope.searchParams.cenaKarte;
+		}
+		
+		config.params.pageNum = $scope.pageNum;
+		
+		$http.get(linijeUrl, config).then(
+			function success(res){
+				$scope.linije = res.data;
+				$scope.totalPages = res.headers("totalPages");
+			},
+			function error(){
+				alert("Neupešno dobavljanje linija.");
+			}
+		);
+	}
+	
+	getLinije();
+	
+	
+	var getPrevoznici = function(){
+		$http.get(prevozniciUrl).then(
+			function success(res){
+				$scope.prevoznici = res.data;
+			},
+			function error(){
+				alert("Neuspešno dobavljanje prevoznika.");
+			}
+		);
+	}
+	
+	getPrevoznici();
+	
+	
+	$scope.doAdd = function(){
+		
+		$http.post(linijeUrl, $scope.newLinija).then(
+			function success(){
+				getLinije();
+				
+				$scope.newLinija = {};
+				$scope.newLinija.brojMesta = "";
+				$scope.newLinija.cenaKarte = "";
+				$scope.newLinija.vremePolaska = "";
+				$scope.newLinija.destinacija = "";
+
+				$scope.prevoznikId = "";
+			},
+			function error(){
+				alert("Neuspešno čuvanje linije!");
+			}
+		);
+	}
+	
+	$scope.doDelete = function(id){
+		var promise = $http.delete(linijeUrl + "/" + id);
+		promise.then(
+			function success(){
+				getLinije();
+			},
+			function error(){
+				alert("Neuspešno brisanje linije.");
+			}
+		);
+	}
+	
+	$scope.goToEdit = function(id){
+		$location.path("/linije/edit/" + id);
+	}
+	
+	$scope.changePage = function(direction){
+		$scope.pageNum = $scope.pageNum + direction;
+		getLinije();
+	}
+	
+	$scope.doSearch = function(){
+		$scope.pageNum = 0;
+		getLinije();
+	}
+	
+	$scope.doReserve = function(id){
+		var promise = $http.post(linijeUrl + "/" + id);
+		promise.then(
+			function success(){
+				alert("Uspešno rezervisano mesto.")
+				getLinije();
+			},
+			function error(){
+				alert("Neuspešna rezervacija.");
+				getLinije();
+			}
+		);
+	}
+	
+});
+
 
 
 
@@ -519,7 +651,7 @@ cmsApp.controller("editLinijaCtrl", function($scope, $http, $routeParams, $locat
 cmsApp.controller("dashboardCtrl", function($scope, $http, $location){
 	
 	//url
-	var baseUrlWorkOrder = "/api/dashboard";
+	var baseUrlWorkOrder = "/api/workorders";
 	$scope.pageNum = 0;
 	$scope.totalPages = 0;
 	$scope.workOrder = [];
@@ -587,7 +719,7 @@ cmsApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl : '/app/html/items.html'
 		})
 		.when('/workOrders', {
-			templateUrl : '/app/html/dashboard-team-member-service.htm'
+			templateUrl : '/app/html/workorder.htm'
 		})
 		.when('/items/edit/:id', {
 			templateUrl : '/app/html/edit-item.html'

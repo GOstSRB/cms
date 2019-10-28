@@ -48,7 +48,7 @@ public class JpaUserService implements UserService {
 
 	@Override
 	public User findByUserNameAndPassword(String username, String password) {
-		return userRepository.findByUserNameAndPassword(username, password);
+		return (User) userRepository.findByUserNameOrPassword(username, password);
 	}
 
 }

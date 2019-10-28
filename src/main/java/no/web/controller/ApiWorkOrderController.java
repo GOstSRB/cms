@@ -19,7 +19,7 @@ import no.support.WorkOrderToWorkOrderDTO;
 import no.web.dto.WorkOrderDTO;
 
 @RestController
-@RequestMapping(value="/api/dashboard")
+@RequestMapping(value="/api/workorders")
 public class ApiWorkOrderController {
 	
 	@Autowired

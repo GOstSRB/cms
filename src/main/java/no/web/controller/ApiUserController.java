@@ -39,9 +39,16 @@ public class ApiUserController {
 
 	@RequestMapping(method=RequestMethod.GET)
 	ResponseEntity<List<UserDTO>> getUser(
+			@RequestParam(required=false) String userName,
+			@RequestParam(required=false) String userFirstName,
+			@RequestParam(required=false) String userLasttName,
 			@RequestParam(defaultValue="0") int page){
 		
-		List<User> users;
+		List<User> users = null;
+//		if(userName != null || userFirstName != null || userLasttName != null) {
+//			users = userService.findByUserNameAndPassword(userName, userFirstName, userLasttName);
+//		}
+		
 		Page<User> usersPage = userService.findAll(page);
 		users = usersPage.getContent();
 		
