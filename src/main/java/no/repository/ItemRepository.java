@@ -9,6 +9,6 @@ import no.model.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 	
-	List<Item> findByPartNameLike(String name);
+	List<Item> findBypartNameLike(String name);
 
 }

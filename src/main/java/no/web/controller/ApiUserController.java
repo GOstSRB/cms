@@ -40,23 +40,24 @@ public class ApiUserController {
 	@RequestMapping(method=RequestMethod.GET)
 	ResponseEntity<List<UserDTO>> getUser(
 			@RequestParam(required=false) String userName,
-			@RequestParam(required=false) String userFirstName,
-			@RequestParam(required=false) String userLasttName,
-			@RequestParam(defaultValue="0") int page){
+			@RequestParam(required=false) String firstName,
+			@RequestParam(required=false) String lastName,
+			@RequestParam(value="page", defaultValue="0") int page){
 		
-		List<User> users = null;
-//		if(userName != null || userFirstName != null || userLasttName != null) {
-//			users = userService.findByUserNameAndPassword(userName, userFirstName, userLasttName);
-//		}
-		
-		Page<User> usersPage = userService.findAll(page);
-		users = usersPage.getContent();
-		
-		if(users == null || users.isEmpty()){
+		Page<User> users = null;
+
+		if(userName != null || firstName != null || lastName != null) {
+			users = userService.search(userName, firstName, lastName, page);
+		} else {
+			users = userService.findAll(page);
+		}
+		if(users == null){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("totalPages", Integer.toString(users.getTotalPages()) );
 		
-		return new ResponseEntity<>(toDto.convert(users), HttpStatus.OK);
+		return new ResponseEntity<>(toDto.convert(users.getContent()), headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

@@ -48,7 +48,21 @@ public class JpaUserService implements UserService {
 
 	@Override
 	public User findByUserNameAndPassword(String username, String password) {
-		return (User) userRepository.findByUserNameOrPassword(username, password);
+		return (User) userRepository.findByUserNameAndPassword(username, password);
+	}
+	//search for users workorder (find customer)
+	@Override
+	public Page<User> search(String userName, String firstName, String lastName, int page) {
+		if(userName != null) {
+			userName = '%' + userName + '%';
+		}
+		if (firstName !=null) {
+			firstName = '%' + firstName + '%';
+		}
+		if (lastName !=null) {	
+			lastName = '%' + lastName + '%';
+		}
+		return userRepository.search(userName, firstName, lastName, new PageRequest(page, 10));
 	}
 
 }

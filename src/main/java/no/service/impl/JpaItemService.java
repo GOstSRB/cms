@@ -43,8 +43,8 @@ public class JpaItemService implements ItemService {
 	}
 
 	@Override
-	public List<Item> findByPartNameLike(String name) {
-		return itemRepository.findByPartNameLike("%"+name+"%");
+	public List<Item> findBypartNameLike(String name) {
+		return itemRepository.findBypartNameLike("%"+name+"%");
 	}
 
 	

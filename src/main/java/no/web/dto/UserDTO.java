@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.Email;
 public class UserDTO {
 	private Long id;
 	private String email;
-	private String username;
-	private String firstname;
-	private String lastname;
+	private String userName;
+	private String firstName;
+	private String lastName;
 	private String password;
 	
 	private String typeOfUser;
@@ -37,22 +37,22 @@ public class UserDTO {
 		this.email = email;
 	}
 	public String getFirstname() {
-		return firstname;
+		return firstName;
 	}
 	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+		this.firstName = firstname;
 	}
 	public String getLastname() {
-		return lastname;
+		return lastName;
 	}
 	public void setLastname(String lastname) {
-		this.lastname = lastname;
+		this.lastName = lastname;
 	}
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 	public String getPassword() {
 		return password;

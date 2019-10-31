@@ -41,12 +41,12 @@ public class ApiItemController {
 	// find with partial name (LIKE) or all
 	@RequestMapping(method=RequestMethod.GET)
 	ResponseEntity<List<ItemDTO>> getItems(
-			@RequestParam(value="name", required=false) String name){
+			@RequestParam(value="partName", required=false) String name){
 		
 		List<Item> items;
 		
 		if(name!=null){
-			items=itemService.findByPartNameLike(name);
+			items=itemService.findBypartNameLike(name);
 		}else{
 			items = itemService.findAll();
 		}

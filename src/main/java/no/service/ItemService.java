@@ -14,6 +14,6 @@ public interface ItemService {
 	
 	List<Item> findAll();
 	
-	List<Item> findByPartNameLike(String name);
+	List<Item> findBypartNameLike(String name);
 	
 }
