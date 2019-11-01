@@ -1,38 +1,34 @@
 body, html {
     height: 100%;
-    width: 100%;
+    
     margin: 0;
   }
  
-#wrapp{
-    width: 100%;
-   	margin: 10px auto;  
-    position: relative;
-    
-    
-}
-#wrapp div{
-    float: left;
-    text-align: center;
-    margin:0.5%;
-   
-    
-}
-#b1{
-    width: 325px;
-    height: 120px;
-    color: black;
-}
-#b2{
-    width: 325px;
-    height: 120px;
-    color: black;
-}
-#b3{
-    width: 325px;
-    height: 120px;
-	color: black;
-}
+.container {
+ 	right: 0; 
+	text-align: center;
+	}
+
+.container .left, .container .center, .container .right { 
+	display: inline-block; 
+	}
+
+.container .left { 
+	float: left; 
+	border: 1px solid green;
+	}
+.container .center {
+	float: center;
+	border: 1px solid green;
+	}
+.container .right { 
+	float: right; 
+	border: 1px solid green;
+	}
+.clear { 
+	clear: both; 
+	}
+
 h3{
    text-align: center;
     clear: both;
@@ -50,7 +46,7 @@ h5{
 	width: auto;
     height: 200px;
     text-align:center;
-    margin: 400px 0 0 0;  
+      
     position: relative;
     
 }

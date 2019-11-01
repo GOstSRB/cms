@@ -13,63 +13,76 @@
 			placeholder="name, address, accnt #. etc">
 	</div>
 
-	<div id="wrapp">
-
-		<h3>Work orders</h3>
-		<div id="b1">
-			<h6>Open Work Order</h6>
+		<div class="container" ng-hide="name">
+  <div class="left"><h6>Open Work Order</h6>
 			<table class="table table-striped">
-			
-			<tr ng-repeat="a in workOrder | filter:{ status: 'Open'} | orderBy:'+date'" >
+			<tr>
+				<th ng-click="sortBy='date';reverse=!reverse">Date</th>
+				<th ng-click="sortBy='workOrderName';reverse=!reverse">Name</th>
+			</tr>
+			<tr ng-repeat="a in workOrder  | filter:{ status: 'Open'} | orderBy:sortBy:reverse"  >
 				<td>{{a.date}}</td>
-				<td>{{a.workOrderName}}</td>
+				<td>{{a.workOrderName | uppercase}}</td>
 				<td>
-				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
-				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Edit</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Delete</button>
 			</td>
 			</tr>
 			</table>
-			
-		</div>
-		<div id="b2">
-			<h6>Accepted Work Order</h6>
+			</div>
+  <div class="center"><h6>Accepted Work Order</h6>
 			<table class="table table-striped">
+			<tr>
+				<th ng-click="sortBy='date';reverse=!reverse">Date</th>
+				<th ng-click="sortBy='workOrderName';reverse=!reverse">Name</th>
+			</tr>
 			
-			<tr ng-repeat="a in workOrder | filter:{ status: 'Accepted'} | orderBy:'+date'">
+			<tr ng-repeat="a in workOrder | filter:{ status: 'Accepted'} | orderBy:sortBy:reverse">
 				<td>{{a.date}}</td>
 				<td>{{a.workOrderName}}</td>
 				<td>
-				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
-				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Edit</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Delete</button>
 			</td>
 			</tr>
 			</table>
-		</div>
-		<div id="b3">
-			<h6>Completed</h6>
+			</div>
+  <div class="right"><h6>Completed</h6>
 			<table class="table table-striped">
+			<tr>
+				<th ng-click="sortBy='date';reverse=!reverse">Date</th>
+				<th ng-click="sortBy='workOrderName';reverse=!reverse">Name</th>
+			</tr>
 			
-			<tr ng-repeat="a in workOrder | filter:{ status: 'Completed'} | orderBy:'+date'">
+			<tr ng-repeat="a in workOrder | filter:{ status: 'Completed'} | orderBy:sortBy:reverse">
 				<td>{{a.date}}</td>
 				<td>{{a.workOrderName}}</td>
 				<td>
-				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Izmeni</button>
-				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Obrisi</button>
+				<button type="button" class="btn btn-warning" ng-click="izmeni(a.id)">Edit</button>
+				<button type="button" class="btn btn-danger" ng-click="obrisi(a.id)">Delete</button>
 			</td>
 			</tr>
 			</table>
-		</div>
-		
-		
-	</div>
+			</div>
+  <div class="clear"></div>
+</div>
+	
 	<div id="button">
 		<h5>View Complete List</h5>
 		<button class="btn btn-primary" ng-click="nazad()" ng-disabled="pageNum == 0">Prethodna</button>
 		<button class="btn btn-primary" ng-click="napred()" ng-disabled="pageNum == totalPages - 1">Sledeća</button>
 	
 	</div>
+	
+	Hide: <input type="checkbox" ng-model="name"/>
+	
 	<h4>
 		<a href="#">Projects</a>
 	</h4>
+	
+	
+
+	
+	
 
 </div>
