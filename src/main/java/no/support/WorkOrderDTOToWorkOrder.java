@@ -22,7 +22,7 @@ public class WorkOrderDTOToWorkOrder implements Converter<WorkOrderDTO, WorkOrde
 		}else {
 			workOrder = new WorkOrder();
 		}
-		
+		workOrder.setId(source.getId());
 		workOrder.setAdditionalComments(source.getAdditionalComments());
 		workOrder.setArrivalTime(source.getArrivalTime());
 		workOrder.setDate(source.getDate());

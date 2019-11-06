@@ -22,7 +22,7 @@ public class WorkOrderDTO {
 	// Need to be date-time field
 	private String departueTime;
 	
-	//	private User user;
+	//	private User user (customer of workorder);
 	private Long userId;
 	private String userName;
 		
@@ -31,6 +31,18 @@ public class WorkOrderDTO {
 	private String workOrderPhone;
 		
 	private String additionalComments;
+
+	
+	private String pocName;
+	private String pocPhone;
+	private String pocEmail;
+	private String misc1;
+	private String misc2;
+	private String misc3;
+	
+	
+	
+	
 	
 	private List<Item> items = new ArrayList<>();
 

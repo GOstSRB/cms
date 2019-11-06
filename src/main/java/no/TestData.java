@@ -181,37 +181,8 @@ public class TestData {
 		u8.setMisc3("access code");
 		userService.save(u8);
 		
-		Item i1 = new Item();
-		i1.setPartName("5 AH 12v Batteries");
-		i1.setPartNumber("FAS1055");
-		i1.setPartPrice(30.00);
-		i1.setPartType("Batteries");
-		i1.setQuantity(2L);
-		itemService.save(i1);
 		
-		Item i2 = new Item();
-		i2.setPartName("5816 Transmitters");
-		i2.setPartNumber("5816WMWH");
-		i2.setPartPrice(50.88);
-		i2.setPartType("Honeywell");
-		i2.setQuantity(1L);
-		itemService.save(i2);
 		
-		Item i3 = new Item();
-		i3.setPartName("IP Dome Cams");
-		i3.setPartNumber("ICIP-D2000-IR");
-		i3.setPartPrice(436.00);
-		i3.setPartType("Cameras");
-		i3.setQuantity(1L);
-		itemService.save(i3);
-		
-		Item i4 = new Item();
-		i4.setPartName("Cat 6");
-		i4.setPartNumber("556609");
-		i4.setPartPrice(470.00);
-		i4.setPartType("Wire");
-		i4.setQuantity(1L);
-		itemService.save(i4);
 		
 		
 		WorkOrder w1 = new WorkOrder();
@@ -220,8 +191,7 @@ public class TestData {
 		w1.setArrivalTime("01/01/2109");
 		w1.setDate("01/02/2019");
 		w1.setDepartueTime("05:00");
-
-//		w1.addItem(i4);
+//		w1.addItem(i5);
 		w1.setStatus("Open");
 		w1.setUser(u1);
 		w1.setWorkOrderName("Liman");
@@ -235,7 +205,6 @@ public class TestData {
 		w2.setArrivalTime("01/01/2109");
 		w2.setDate("01/03/2019");
 		w2.setDepartueTime("05:00");
-
 //		w2.addItem(i4);
 		w2.setStatus("Completed");
 		w2.setUser(u2);
@@ -249,8 +218,7 @@ public class TestData {
 		w3.setAdditionalComments("no comment");
 		w3.setArrivalTime("01/04/2109");
 		w3.setDate("01/04/2019");
-		w3.setDepartueTime("05:00");
-
+		w3.setDepartueTime("06:00");
 //		w3.addItem(i4);
 		w3.setStatus("Accepted");
 		w3.setUser(u1);
@@ -265,7 +233,6 @@ public class TestData {
 		w4.setArrivalTime("01/05/2109");
 		w4.setDate("01/05/2019");
 		w4.setDepartueTime("05:00");
-
 //		w4.addItem(i4);
 		w4.setStatus("Accepted");
 		w4.setUser(u2);
@@ -279,8 +246,6 @@ public class TestData {
 		w5.setArrivalTime("01/06/2109");
 		w5.setDate("01/06/2019");
 		w5.setDepartueTime("05:00");
-
-//		w5.addItem(i5);
 		w5.setStatus("Completed");
 		w5.setUser(u1);
 		w5.setWorkOrderName("Rumenka");
@@ -294,8 +259,6 @@ public class TestData {
 		w6.setArrivalTime("01/07/2109");
 		w6.setDate("01/07/2019");
 		w6.setDepartueTime("05:00");
-
-//		w6.addItem(i6);
 		w6.setStatus("Completed");
 		w6.setUser(u2);
 		w6.setWorkOrderName("Novi Sad");
@@ -331,7 +294,54 @@ public class TestData {
 		w8.setWorkOrderPhone("000111222");
 		workorderService.save(w8);
 		
+		Item i1 = new Item();
+		i1.setPartName("5 AH 12v Batteries");
+		i1.setPartNumber("FAS1055");
+		i1.setPartPrice(30.00);
+		i1.setPartType("Batteries");
+		i1.setQuantity(2L);
+		itemService.save(i1);
 		
+		Item i2 = new Item();
+		i2.setPartName("5816 Transmitters");
+		i2.setPartNumber("5816WMWH");
+		i2.setPartPrice(50.88);
+		i2.setPartType("Honeywell");
+		i2.setQuantity(1L);
+		itemService.save(i2);
+		
+		Item i3 = new Item();
+		i3.setPartName("IP Dome Cams");
+		i3.setPartNumber("ICIP-D2000-IR");
+		i3.setPartPrice(436.00);
+		i3.setPartType("Cameras");
+		i3.setQuantity(1L);
+		itemService.save(i3);
+		
+		Item i4 = new Item();
+		i4.setPartName("Cat 6");
+		i4.setPartNumber("556609");
+		i4.setPartPrice(470.00);
+		i4.setPartType("Wire");
+		i4.setQuantity(1L);
+		itemService.save(i4);
+		
+		Item i5 = new Item();
+		i5.setPartName("1.0 Hr Labor to diagnose issue ");
+		i5.setPartNumber("0000001");
+		i5.setPartPrice(90.00);
+		i5.setPartType("WO");
+		i5.setQuantity(1L);
+		itemService.save(i5);
+		
+		List<Item> wo1 = new ArrayList<Item>();
+		wo1.add(i1);
+		wo1.add(i5);
+		
+		w1.setItems(wo1);
+		
+		workorderService.save(w1);
+	
 		
 		
 		

@@ -16,6 +16,7 @@ public class WorkOrderToWorkOrderDTO implements Converter<WorkOrder, WorkOrderDT
 	public WorkOrderDTO convert(WorkOrder source) {
 		WorkOrderDTO wodto = new WorkOrderDTO();
 		
+		wodto.setId(source.getId());
 		wodto.setAdditionalComments(source.getAdditionalComments());
 		wodto.setArrivalTime(source.getArrivalTime());
 		wodto.setDate(source.getDate());

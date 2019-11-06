@@ -1,10 +1,16 @@
 package no.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -33,6 +39,13 @@ public class Item {
 	@Column(name="partPrice")
 	private Double partPrice;
 	
+//	@ManyToMany
+//	@JoinTable(name="ITEM_WORKORDERS",
+//			joinColumns = {@JoinColumn(name="ITEM_ID")},
+// 		    inverseJoinColumns = @JoinColumn(name="WORKORDER_ID"))
+//	private List<WorkOrder> workOrders = new ArrayList<>();
+	
+	// we dont need this!!!!
 	@ManyToOne(fetch=FetchType.EAGER)
 	private WorkOrder workOrder;
 

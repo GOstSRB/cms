@@ -18,7 +18,6 @@ public class JpaWorkOrder implements WorkOrderService {
 
 	@Override
 	public WorkOrder save(WorkOrder workorder) {
-		// TODO Auto-generated method stub
 		return workOrderRepository.save(workorder);
 	}
 
@@ -35,7 +34,6 @@ public class JpaWorkOrder implements WorkOrderService {
 
 	@Override
 	public WorkOrder findOne(Long id) {
-		
 		return workOrderRepository.findOne(id);
 	}
 

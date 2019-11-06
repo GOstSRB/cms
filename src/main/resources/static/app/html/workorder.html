@@ -96,117 +96,238 @@
 						</thead>
 
 						<tbody>
-  						<div>
-	<!--	I variant						<input type="text" ng-model="searchParams.username"
-									ng-change="change(text)" placeholder="insert some customer"
-									uib-typeahead="user for user in users"
-									typeahead-loading="loadingLocations"
-									typeahead-no-results="noResults" class="form-control" />
-								<i ng-show="loadingLocations"
-									class="glyphicon glyphicon-refresh"></i>
-								<div ng-show="noResults">
-									<i class="glyphicon glyphicon-remove"></i> No Results Found
-								</div> -->	
-								
-								<input type="text" ng-model="searchParams.username"
-									ng-change="change(text)" placeholder="insert some customer" ng-model="ngModelOptionsSelected" ng-model-options="modelOptions" uib-typeahead="u.username for username in users($viewValue) | limitTo:8" class="form-control">
+							<div class="form-group">
+								<input id="username" class="form-control"
+									ng-model="searchParams.username" role="presentation" name=""
+									type="text" value="{{user.username}}" ng-change="change(text)"
+									placeholder="insert some customer" list="usersOf" />
+								<datalist role="presentation" id="usersOf">
+									<select>
+										<option
+											ng-repeat='user in users| filter:searchParams.username | limitTo:8'
+											value="{{user.username}}">
+											{{user.username}}{{user.firstname}}{{user.lastname}}</option>
+									</select>
+								</datalist>
 							</div>
-
 						</tbody>
 					</table>
 				</div>
 				<div class="col">reserve</div>
-
-
-
 			</div>
-
 		</div>
 	</div>
-</div>
-<div class="row">
-	<table>
-		<thead>
-			<tr>
-				<th>Description</th>
-				<th>Quantity</th>
-				<th>Unit price</th>
-				<th>Total</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<span class="glyphicon glyphicon-eye-open"></span>
-						<!––[1] Invoke showModal() handler on click ––>
-						<button type="button" class="btn btn-success btn-xs pull-right"
-							ng-click="showModal()">
-							<span class="glyphicon glyphicon-plus"></span> ADD item
-						</button>
-					</div>
-					<div class="panel-body">
-						<!–– [2] Show help text if no watchlists exist ––>
-						<div ng-if="!watchlists.length" class="text-center">
-							Use <span class="glyphicon glyphicon-plus"></span> to create a
-							list
-						</div>
-						<div class="list-group">
-							<!–– [3] Repeat over each list in watchlists and create link ––>
-							<a class="list-group-item"
-								ng-repeat="list in watchlists track by $index">
-								{{list.name}} <!–– [4] Delete this list by invoking deleteList() handler ––>
-								<button type="button" class="close" ng-click="deleteList(list)">
-									&times;</button>
-							</a>
-						</div>
-					</div>
+	<div class="row">
+
+		<table>
+			<form>
+				<div class="form-group" ng-controller="ListCtrl">
+					<label for="partName">Part Name</label> <input id="partName"
+						class="form-control" ng-model="query" role="presentation"
+						name="description" type="text" value="{{item.partName}}"
+						ng-change="change(text)" class="form-control" placeholder="Query"
+						list="itemsOf" />
+					<datalist role="presentation" id="itemsOf">
+						<select>
+							<option ng-repeat='item in items | filter:query | limitTo:8'
+								value="{{item.partName}}">{{item.partName}}</option>
+						</select>
+					</datalist>
 				</div>
+				<div class="form-group">
+					<label for="quantity">Quantity</label> <input id="quantity"
+						class="form-control" ng-model="item.quantity" />
+				</div>
+				<div class="form-group">
+					<label for="partPrice">Part Price</label> <input id="partPrice"
+						class="form-control" ng-model="item.partPrice" />
+				</div>
+				<div class="form-group">
+					<label for="total">Total</label> <input id="total"
+						class="form-control" ng-model="item.total" />
+				</div>
+
+				<button class="btn btn-primary" ng-click="doAdd()">Add row
+					item in WO</button>
+			</form>
+
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Quantity</th>
+					<th>Unit price</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{item.partName}} <input />
+
+					</td>
+					<td>{{item.qty}}
+						<div class="form-group">
+							<input id="numberOfParts" class="form-group"
+								ng-model="newInputInWO.numberOfParts" />
+							<button class="btn btn-primary" ng-click="doBuys(item.id)">insert</button>
+						</div>
+					</td>
+					<td>{{item.unitPrice}}</td>
+					<td>{{item.total}}</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+
+		<table>
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Quantity</th>
+					<th>Unit price</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="i in items">
+					<td ng-controller="ListCtrl"><input role="presentation"
+						name="description" type="text" value="{{item.partName}}"
+						ng-change="change(text)" class="form-control" placeholder="Query"
+						ng-model="query" list="itemsOf" /> <datalist role="presentation"
+							id="itemsOf">
+
+							<select>
+								<option ng-repeat='item in items | filter:query | limitTo:8'
+									value="{{item.partName}}">{{item.partName}}</option>
+							</select>
+
+						</datalist> <!-- 	VARIANT I https://angular-ui.github.io/bootstrap/ section 		---Typeahead (ui.bootstrap.typeahead)---
+<pre>Model: {{asyncSelected | json}}</pre>
+
+<input type="text" ng-model="asyncSelected" placeholder="Items loaded via $http" uib-typeahead="item for item in getItems($viewValue)" typeahead-loading="loadingItems" typeahead-no-results="noResults" class="form-control">
+<i ng-show="loadingItems" class="glyphicon glyphicon-refresh"></i>
+<div ng-show="noResults">
+<i class="glyphicon glyphicon-remove"></i> No Results Found
+</div>
+	  --> <!-- VARIANT II  
+<div class="dropdown dropdown-scroll">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Select to add part <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" >
+      <li role="presentation">
+        <div class="input-group input-group-sm search-control"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+          <input type="text" ng-change="change(text)" class="form-control" placeholder="Query" ng-model="query" list="items">
+        </div>
+      </li>
+      <datalist role="presentation"  id="items">
+     
+      <select>
+        <option ng-repeat='item in items | filter:query | limitTo:8' value="{{item.partName}}"> {{item.partName}} </option>
+      </select>
+     
+      </datalist>
+    </ul>
+  </div>
+ --> <!-- VARIANT III 	
+
+<div class="dropdown dropdown-scroll" ng-controller="ListCtrl">
+	<div class="input-group input-group-sm search-control"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="text" ng-change="change(text)" class="form-control" placeholder="Query" ng-model="query">
+        <select ng-options="item as item.partName for item in items track by item.id" ng-model="selected"></select>
+    </div>
+</div>	--> <!-- VARIANT IV 
+<div ng-controller="DemoCtrl as ctrl" layout="column" ng-cloak>
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <p id="autocompleteDescription">
+        Use <code>md-autocomplete</code> to search for matches from local or remote data sources.
+      </p>
+      <label id="favoriteStateLabel">Favorite State</label>
+      <md-autocomplete
+          ng-disabled="ctrl.isDisabled"
+          md-no-cache="ctrl.noCache"
+          md-selected-item="ctrl.selectedItem"
+          md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+          md-search-text="ctrl.searchText"
+          md-selected-item-change="ctrl.selectedItemChange(item)"
+          md-items="item in ctrl.querySearch(ctrl.searchText)"
+          md-item-text="item.display"
+          md-min-length="0"
+          placeholder="Ex. Alaska"
+          input-aria-labelledby="favoriteStateLabel"
+          input-aria-describedby="autocompleteDetailedDescription">
+        <md-item-template>
+          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        </md-item-template>
+        <md-not-found>
+          No states matching "{{ctrl.searchText}}" were found.
+          <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+        </md-not-found>
+      </md-autocomplete>
+      <br/>
+      <md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
+      <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
+      <md-checkbox ng-model="ctrl.isDisabled">Disable the input?</md-checkbox>
+      <p id="autocompleteDetailedDescription">
+        By default, <code>md-autocomplete</code> will cache results when performing a query.
+        After the initial call is performed, it will use the cached results to eliminate unnecessary
+        server requests or lookup logic. This can be disabled above.
+      </p>
+    </form>
+  </md-content>
+</div>
+
+Use md-autocomplete to search for matches from lo
+--></td>
+
+
+					<td>{{item.qty}}</td>
+					<td>{{item.unitPrice}}</td>
+					<td>{{item.total}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<!-- 		<input ng-model="newItemDescription" name="description" type="text"/>
+			<input ng-model="newItemQty" name="qty" type="text"/>
+			<input ng-model="newItemUnitPrice" name="unitPrice" type="text"/>
+			<input ng-model="newItemTotal" name="total" type="text"/>   -->
+			<button ng-click="addItem()" type="button">Add row!</button>
+		</div>
+	</div>
+
+
+	<div id="Dashboard Team Member - Service_9606" align=center
+		x:publishsource="Excel">
+
+		<table border=0 cellpadding=0 cellspacing=0 width=1209
+			style='border-collapse: collapse; table-layout: fixed; width: 907pt'>
+			<col width=64 span=9 style='width: 48pt'>
+			<col width=121
+				style='mso-width-source: userset; mso-width-alt: 4425; width: 91pt'>
+			<col width=64 span=8 style='width: 48pt'>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=10 height=20 class=xl1309606 width=697
+					style='height: 15.0pt; width: 523pt'>Work Order</td>
+				<td class=xl159606 width=64 style='width: 48pt'></td>
+				<td class=xl159606 colspan=6 width=384 style='width: 288pt'>Turn
+					this box color to match dashboard color for Open</td>
+				<td class=xl159606 width=64 style='width: 48pt'></td>
 			</tr>
+			<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
+				<td height=20 class=xl649606 style='height: 15.0pt'>&nbsp;</td>
 
-		</tbody>
-	</table>
-</div>
-</div>
+				<td class=xl159606>Status = Open</td>
 
+				<td class=xl669606 colspan=2>Sequence of Event:</td>
 
-
-
-
-
-
-
-
-
-
-<div id="Dashboard Team Member - Service_9606" align=center
-	x:publishsource="Excel">
-
-	<table border=0 cellpadding=0 cellspacing=0 width=1209
-		style='border-collapse: collapse; table-layout: fixed; width: 907pt'>
-		<col width=64 span=9 style='width: 48pt'>
-		<col width=121
-			style='mso-width-source: userset; mso-width-alt: 4425; width: 91pt'>
-		<col width=64 span=8 style='width: 48pt'>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=10 height=20 class=xl1309606 width=697
-				style='height: 15.0pt; width: 523pt'>Work Order</td>
-			<td class=xl159606 width=64 style='width: 48pt'></td>
-			<td class=xl159606 colspan=6 width=384 style='width: 288pt'>Turn
-				this box color to match dashboard color for Open</td>
-			<td class=xl159606 width=64 style='width: 48pt'></td>
-		</tr>
-		<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
-			<td height=20 class=xl649606 style='height: 15.0pt'>&nbsp;</td>
-
-			<td class=xl159606>Status = Open</td>
-
-			<td class=xl669606 colspan=2>Sequence of Event:</td>
-
-		</tr>
-		<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
-			<td height=20 style='height: 15.0pt' align=left valign=top>
-				<!--[if gte vml 1]><v:shapetype
+			</tr>
+			<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
+				<td height=20 style='height: 15.0pt' align=left valign=top>
+					<!--[if gte vml 1]><v:shapetype
    id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
    path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
    <v:stroke joinstyle="miter"/>
@@ -236,587 +357,598 @@
     <x:AutoPict/>
    </x:ClientData>
   </v:shape><![endif]--> <![if !vml]><span
-				style='mso-ignore: vglayout; position: absolute; z-index: 1; margin-left: 4px; margin-top: 4px; width: 306px; height: 88px'><img
-					width=306 height=88
-					src="Dashboard%20Team%20Member%20-%20Service_files/Dashboard%20Team%20Member%20-%20Service_9606_image002.png"
-					v:shapes="Picture_x0020_2"></span> <![endif]><span
-				style='mso-ignore: vglayout2'>
-					<table cellpadding=0 cellspacing=0>
-						<tr>
-							<td height=20 class=xl1049606 width=64
-								style='height: 15.0pt; width: 48pt'>&nbsp;</td>
-						</tr>
-					</table>
-			</span>
-			</td>
+					style='mso-ignore: vglayout; position: absolute; z-index: 1; margin-left: 4px; margin-top: 4px; width: 306px; height: 88px'><img
+						width=306 height=88
+						src="Dashboard%20Team%20Member%20-%20Service_files/Dashboard%20Team%20Member%20-%20Service_9606_image002.png"
+						v:shapes="Picture_x0020_2"></span> <![endif]><span
+					style='mso-ignore: vglayout2'>
+						<table cellpadding=0 cellspacing=0>
+							<tr>
+								<td height=20 class=xl1049606 width=64
+									style='height: 15.0pt; width: 48pt'>&nbsp;</td>
+							</tr>
+						</table>
+				</span>
+				</td>
 
 
-		</tr>
-		<tr height=21 style='mso-height-source: userset; height: 15.75pt'>
-			<td height=21 class=xl1069606 style='height: 15.75pt'>&nbsp;</td>
+			</tr>
+			<tr height=21 style='mso-height-source: userset; height: 15.75pt'>
+				<td height=21 class=xl1069606 style='height: 15.75pt'>&nbsp;</td>
 
-		</tr>
-		<tr height=28 style='height: 21.0pt'>
-			<td height=28 class=xl1069606 style='height: 21.0pt'>&nbsp;</td>
+			</tr>
+			<tr height=28 style='height: 21.0pt'>
+				<td height=28 class=xl1069606 style='height: 21.0pt'>&nbsp;</td>
 
-		</tr>
-		<tr height=28 style='height: 21.0pt'>
-			<td height=28 class=xl1069606 style='height: 21.0pt'>&nbsp;</td>
+			</tr>
+			<tr height=28 style='height: 21.0pt'>
+				<td height=28 class=xl1069606 style='height: 21.0pt'>&nbsp;</td>
 
-			<td class=xl1089606>ARRIVAL TIME:</td>
-			<td class=xl689606 style='border-top: none'>&nbsp;</td>
+				<td class=xl1089606>ARRIVAL TIME:</td>
+				<td class=xl689606 style='border-top: none'>&nbsp;</td>
 
-		</tr>
-		<tr height=28 style='mso-height-source: userset; height: 21.0pt'>
-			<td height=28 class=xl939606 style='height: 21.0pt'>&nbsp;</td>
+			</tr>
+			<tr height=28 style='mso-height-source: userset; height: 21.0pt'>
+				<td height=28 class=xl939606 style='height: 21.0pt'>&nbsp;</td>
 
-			<td class=xl1109606><u
-				style='visibility: hidden; mso-ignore: visibility'>&nbsp;</u></td>
+				<td class=xl1109606><u
+					style='visibility: hidden; mso-ignore: visibility'>&nbsp;</u></td>
 
-			<td class=xl1089606>DEPARTURE TIME:</td>
-			<td class=xl699606 style='border-top: none'>&nbsp;</td>
+				<td class=xl1089606>DEPARTURE TIME:</td>
+				<td class=xl699606 style='border-top: none'>&nbsp;</td>
 
-		</tr>
-		<tr height=15 style='mso-height-source: userset; height: 11.25pt'>
-			<td height=15 class=xl1119606 style='height: 11.25pt'>&nbsp;</td>
+			</tr>
+			<tr height=15 style='mso-height-source: userset; height: 11.25pt'>
+				<td height=15 class=xl1119606 style='height: 11.25pt'>&nbsp;</td>
 
-			<td class=xl1109606><u
-				style='visibility: hidden; mso-ignore: visibility'>&nbsp;</u></td>
+				<td class=xl1109606><u
+					style='visibility: hidden; mso-ignore: visibility'>&nbsp;</u></td>
 
-			<td class=xl1129606 width=64 style='width: 48pt'>&nbsp;</td>
-			<td class=xl1139606 width=121 style='width: 91pt'>&nbsp;</td>
+				<td class=xl1129606 width=64 style='width: 48pt'>&nbsp;</td>
+				<td class=xl1139606 width=121 style='width: 91pt'>&nbsp;</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl709606 colspan=2 style='height: 15.75pt'>REASON
-				FOR SERVICE</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl709606 colspan=2 style='height: 15.75pt'>REASON
+					FOR SERVICE</td>
 
-			<td colspan=6 class=xl1349606 style='border-right: 1.0pt solid black'>BILL
-				TO</td>
+				<td colspan=6 class=xl1349606
+					style='border-right: 1.0pt solid black'>BILL TO</td>
 
-		</tr>
-		<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
-			<td colspan=4 rowspan=4 height=81 class=xl1689606 width=256
-				style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black; height: 60.75pt; width: 192pt'>Customer
-				states their panelï¿½.</td>
-			<td class=xl729606 colspan=2>CUSTOMER NAME:</td>
-			<td class=xl739606>&nbsp;</td>
-			<td colspan=3 class=xl1479606 style='border-right: 1.0pt solid black'>&nbsp;</td>
-			<td class=xl659606 colspan=7>The sections highlighted in yellow
-				will autofill from customer database</td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>CUSTOMER
-				ADDRESS:</td>
-			<td class=xl759606 style='border-top: none'>&nbsp;</td>
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
-			<td class=xl659606 colspan=4>Allow autofill fields to be
-				editable.</td>
+			</tr>
+			<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
+				<td colspan=4 rowspan=4 height=81 class=xl1689606 width=256
+					style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black; height: 60.75pt; width: 192pt'>Customer
+					states their panelï¿½.</td>
+				<td class=xl729606 colspan=2>CUSTOMER NAME:</td>
+				<td class=xl739606>&nbsp;</td>
+				<td colspan=3 class=xl1479606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td class=xl659606 colspan=7>The sections highlighted in yellow
+					will autofill from customer database</td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>CUSTOMER
+					ADDRESS:</td>
+				<td class=xl759606 style='border-top: none'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td class=xl659606 colspan=4>Allow autofill fields to be
+					editable.</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl749606 colspan=3 style='height: 15.0pt'>WORK
-				ORDERED BY NAME:</td>
-			<td colspan=3 class=xl1239606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl749606 colspan=3 style='height: 15.0pt'>WORK
+					ORDERED BY NAME:</td>
+				<td colspan=3 class=xl1239606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl749606 colspan=3 style='height: 15.75pt'>WORK
-				ORDERED BY PHONE:</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl749606 colspan=3 style='height: 15.75pt'>WORK
+					ORDERED BY PHONE:</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl709606 colspan=2 style='height: 15.75pt'>DESCRIPTION
-				OF WORK</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl709606 colspan=2 style='height: 15.75pt'>DESCRIPTION
+					OF WORK</td>
 
-			<td class=xl749606 style='border-top: none'>POC NAME:</td>
+				<td class=xl749606 style='border-top: none'>POC NAME:</td>
 
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=4 rowspan=5 height=102 class=xl1799606 width=256
-				style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black; height: 76.5pt; width: 192pt'>Arrived
-				onsite to find the panel displaying a ground fault.<span
-				style='mso-spacerun: yes'>ï¿½ </span>Traced wiring to find pinched
-				wire in dog wash area.<span style='mso-spacerun: yes'>ï¿½ </span>Repaired.<span
-				style='mso-spacerun: yes'>ï¿½ </span>Panel returned to normal.
-			</td>
-			<td class=xl749606 colspan=2>POC PHONE:</td>
-			<td class=xl759606 style='border-top: none'>&nbsp;</td>
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=4 rowspan=5 height=102 class=xl1799606 width=256
+					style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black; height: 76.5pt; width: 192pt'>Arrived
+					onsite to find the panel displaying a ground fault.<span
+					style='mso-spacerun: yes'>ï¿½ </span>Traced wiring to find pinched
+					wire in dog wash area.<span style='mso-spacerun: yes'>ï¿½ </span>Repaired.<span
+					style='mso-spacerun: yes'>ï¿½ </span>Panel returned to normal.
+				</td>
+				<td class=xl749606 colspan=2>POC PHONE:</td>
+				<td class=xl759606 style='border-top: none'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl749606
-				style='height: 15.0pt; border-top: none; border-left: none'>POC
-				EMAIL:</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl749606
+					style='height: 15.0pt; border-top: none; border-left: none'>POC
+					EMAIL:</td>
 
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>ACCOUNT
-				NUMBER:</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>ACCOUNT
+					NUMBER:</td>
 
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>PANEL
-				TYPE:</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl749606 colspan=2 style='height: 15.0pt'>PANEL
+					TYPE:</td>
 
-			<td colspan=3 class=xl1509606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+				<td colspan=3 class=xl1509606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl769606 colspan=2 style='height: 15.75pt'>SITE
-				ACCESS CODE:</td>
-			<td class=xl779606>&nbsp;</td>
-			<td colspan=3 class=xl1889606 style='border-right: 1.0pt solid black'>&nbsp;</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl769606 colspan=2 style='height: 15.75pt'>SITE
+					ACCESS CODE:</td>
+				<td class=xl779606>&nbsp;</td>
+				<td colspan=3 class=xl1889606
+					style='border-right: 1.0pt solid black'>&nbsp;</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=7 height=21 class=xl1349606 style='height: 15.75pt'>DESCRIPTION</td>
-			<td class=xl789606 style='border-top: none'>QTY</td>
-			<td class=xl789606 style='border-top: none'>UNIT PRICE</td>
-			<td class=xl799606 style='border-top: none'>TOTAL</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=7 height=21 class=xl1349606 style='height: 15.75pt'>DESCRIPTION</td>
+				<td class=xl789606 style='border-top: none'>QTY</td>
+				<td class=xl789606 style='border-top: none'>UNIT PRICE</td>
+				<td class=xl799606 style='border-top: none'>TOTAL</td>
 
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=7 height=21 class=xl1369606
-				style='border-right: .5pt solid black; height: 15.75pt'>1.0 Hr
-				Labor to diagnose issue</td>
-			<td class=xl809606 align=right style='border-left: none'>1</td>
-			<td class=xl819606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>90,00</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'></span>90,00</td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=7 height=21 class=xl1369606
+					style='border-right: .5pt solid black; height: 15.75pt'>1.0 Hr
+					Labor to diagnose issue</td>
+				<td class=xl809606 align=right style='border-left: none'>1</td>
+				<td class=xl819606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>90,00</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'></span>90,00</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>New
-				Wireless Door Contact</td>
-			<td class=xl839606 align=right
-				style='border-top: none; border-left: none'>1</td>
-			<td class=xl849606 style='border-top: none; border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>45,00</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>45,00</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>New
+					Wireless Door Contact</td>
+				<td class=xl839606 align=right
+					style='border-top: none; border-left: none'>1</td>
+				<td class=xl849606 style='border-top: none; border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>45,00</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>45,00</td>
 
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
-			<td class=xl829606 style='border-left: none'><span
-				style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
-			</span>-<span style='mso-spacerun: yes'> </span></td>
-
-		</tr>
-		<tr height=22 style='height: 16.5pt'>
-			<td colspan=9 height=22 class=xl1539606
-				style='border-right: .5pt solid black; height: 16.5pt'>Total</td>
-			<td class=xl859606 style='border-top: none; border-left: none'><span
-				style='mso-spacerun: yes'>ï¿½</span>$<span style='mso-spacerun: yes'>
-			</span>135,00</td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl869606 colspan=3 style='height: 15.0pt'>Other
-				Comments/Special Instructions:</td>
-
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>1.<span
-				style='mso-spacerun: yes'>ï¿½ </span>This is not an invoice.<span
-				style='mso-spacerun: yes'>ï¿½ </span>You will receive an invoice via
-				email/mail.
-			</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1229606>c</td>
-			<td colspan=2 class=xl1779606 style='border-right: 1.0pt solid black'>Text
-				Customer</td>
-			<td class=xl159606 colspan=8>Selection of box would send an
-				automated text.email message to customer</td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>2.<span
-				style='mso-spacerun: yes'>ï¿½ </span>Please email us at
-				service@tridentco.net with questions or concerns.
-			</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1229606>c</td>
-			<td colspan=2 class=xl1779606 style='border-right: 1.0pt solid black'>Email
-				Customer</td>
-			<td colspan=8 rowspan=2 class=xl1279606 width=512
-				style='width: 384pt'>&quot;Thank you for scheduling with us.<span
-				style='mso-spacerun: yes'>ï¿½ </span>We will keep you up to date on
-				the status of this work order.<span style='mso-spacerun: yes'>ï¿½
-			</span>Reply &quot;Stop&quot; to stop receiving these notifications.
-			</td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>3.<span
-				style='mso-spacerun: yes'>ï¿½ </span>If labor exceeds proposed
-				amount, customer approval required.
-			</td>
-
-		</tr>
-		<tr height=14 style='mso-height-source: userset; height: 10.5pt'>
-			<td height=14 class=xl939606 style='height: 10.5pt'>&nbsp;</td>
-
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
-			<td class=xl949606 colspan=4>RETURN TRIP NOTES/ADDITIONAL
-				COMMENTS:</td>
-			<td class=xl969606>&nbsp;</td>
-			<td class=xl969606>&nbsp;</td>
-			<td class=xl979606>&nbsp;</td>
-			<td class=xl989606>&nbsp;</td>
-			<td class=xl929606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
-			<td colspan=8 rowspan=3 class=xl1569606
-				style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black'>&nbsp;</td>
-			<td class=xl929606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl939606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl929606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
-			<td class=xl929606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=6 style='mso-height-source: userset; height: 4.5pt'>
-			<td height=6 class=xl939606 style='height: 4.5pt'>&nbsp;</td>
-			<td class=xl1149606>&nbsp;</td>
-			<td class=xl1149606>&nbsp;</td>
-			<td class=xl1149606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1169606>&nbsp;</td>
-			<td class=xl1169606>&nbsp;</td>
-			<td class=xl929606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=10 height=20 class=xl1659606
-				style='border-right: 1.0pt solid black; height: 15.0pt'>I AGREE
-				THAT ALL WORK HAS BEEN PERFORMED TO MY SATISFACTION.</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl999606 style='height: 15.0pt'>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1179606></td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1009606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=6 height=20 class=xl1019606 style='height: 15.0pt'>Signature/Print
-				Name:________________________________________________</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606 colspan=3 style='border-right: 1.0pt solid black'>Completed
-				Date:______________________</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=14 style='mso-height-source: userset; height: 10.5pt'>
-			<td height=14 class=xl1019606 style='height: 10.5pt'>&nbsp;</td>
-			<td class=xl1189606>&nbsp;</td>
-			<td class=xl1189606>&nbsp;</td>
-			<td class=xl1189606>&nbsp;</td>
-			<td class=xl1189606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1159606>&nbsp;</td>
-			<td class=xl1009606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=10 height=21 class=xl1029606
-				style='border-right: 1.0pt solid black; height: 15.75pt'>Thank
-				You For Your Business!</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=10 height=21 class=xl1029606
-				style='border-right: 1.0pt solid black; height: 15.75pt'>Review
-				us on Google and be entered to win free monitoring</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td colspan=10 height=20 class=xl1329606
-				style='border-right: 1.0pt solid black; height: 15.0pt'><a
-				href="https://search.google.com/local/writereview?placeid=ChIJ_b85VG35a4cRhyd5Rlj3St8"><span
-					style='color: #0563C1; font-weight: 400; text-decoration: underline; text-underline-style: single; font-family: Calibri, sans-serif; mso-font-charset: 0'>https://search.google.com/local/writereview?placeid=ChIJ_b85VG35a4cRhyd5Rlj3St8</span></a></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=12 style='mso-height-source: userset; height: 9.0pt'>
-			<td height=12 class=xl1029606 style='height: 9.0pt'>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1209606>&nbsp;</td>
-			<td class=xl1039606>&nbsp;</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=21 style='height: 15.75pt'>
-			<td colspan=10 height=21 class=xl1449606
-				style='border-right: 1.0pt solid black; height: 15.75pt'>PO Box
-				826 Longmont, CO 80502 | 303-651-7371 office | service@tridentco.net</td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl679606 colspan=2 style='height: 15.0pt'><a
-				href="#Dashboard!A1">Back to Home</a></td>
-			<td class=xl1199606></td>
-			<td class=xl1199606></td>
-			<td class=xl1199606></td>
-			<td class=xl1199606></td>
-			<td class=xl1199606></td>
-			<td class=xl1199606></td>
-			<td class=xl159606></td>
-			<td class=xl679606><a href="#Dashboard!A1">Assign Button</a></td>
-			<td colspan=8 rowspan=2 class=xl1269606 width=512
-				style='width: 384pt'>This button would redirect to Google
-				Calendar to create a new calendar event for a specific field tech.</td>
-		</tr>
-		<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
-			<td height=20 class=xl159606 style='height: 15.0pt'></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-		</tr>
-		<tr height=20 style='height: 15.0pt'>
-			<td height=20 class=xl159606 style='height: 15.0pt'></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606></td>
-			<td class=xl159606 colspan=7>I am not sure the best way to
-				accomplish this - we are open to ideas.</td>
-			<td class=xl159606></td>
-		</tr>
-		<![if supportMisalignedColumns]>
-		<tr height=0 style='display: none'>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=121 style='width: 91pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-			<td width=64 style='width: 48pt'></td>
-		</tr>
-		<![endif]>
-	</table>
-
-</div>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
 
 
-<!----------------------------->
-<!--END OF OUTPUT FROM EXCEL PUBLISH AS WEB PAGE WIZARD-->
-<!----------------------------->
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=7 height=20 class=xl1289606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl839606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl849606 style='border-top: none; border-left: none'>&nbsp;</td>
+				<td class=xl829606 style='border-left: none'><span
+					style='mso-spacerun: yes'></span>$<span style='mso-spacerun: yes'>
+				</span>-<span style='mso-spacerun: yes'> </span></td>
+
+			</tr>
+			<tr height=22 style='height: 16.5pt'>
+				<td colspan=9 height=22 class=xl1539606
+					style='border-right: .5pt solid black; height: 16.5pt'>Total</td>
+				<td class=xl859606 style='border-top: none; border-left: none'><span
+					style='mso-spacerun: yes'>ï¿½</span>$<span
+					style='mso-spacerun: yes'> </span>135,00</td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl869606 colspan=3 style='height: 15.0pt'>Other
+					Comments/Special Instructions:</td>
+
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>1.<span
+					style='mso-spacerun: yes'>ï¿½ </span>This is not an invoice.<span
+					style='mso-spacerun: yes'>ï¿½ </span>You will receive an invoice
+					via email/mail.
+				</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1229606>c</td>
+				<td colspan=2 class=xl1779606
+					style='border-right: 1.0pt solid black'>Text Customer</td>
+				<td class=xl159606 colspan=8>Selection of box would send an
+					automated text.email message to customer</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>2.<span
+					style='mso-spacerun: yes'>ï¿½ </span>Please email us at
+					service@tridentco.net with questions or concerns.
+				</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1229606>c</td>
+				<td colspan=2 class=xl1779606
+					style='border-right: 1.0pt solid black'>Email Customer</td>
+				<td colspan=8 rowspan=2 class=xl1279606 width=512
+					style='width: 384pt'>&quot;Thank you for scheduling with us.<span
+					style='mso-spacerun: yes'>ï¿½ </span>We will keep you up to date on
+					the status of this work order.<span style='mso-spacerun: yes'>ï¿½
+				</span>Reply &quot;Stop&quot; to stop receiving these notifications.
+				</td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl919606 colspan=6 style='height: 15.0pt'>3.<span
+					style='mso-spacerun: yes'>ï¿½ </span>If labor exceeds proposed
+					amount, customer approval required.
+				</td>
+
+			</tr>
+			<tr height=14 style='mso-height-source: userset; height: 10.5pt'>
+				<td height=14 class=xl939606 style='height: 10.5pt'>&nbsp;</td>
+
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
+				<td class=xl949606 colspan=4>RETURN TRIP NOTES/ADDITIONAL
+					COMMENTS:</td>
+				<td class=xl969606>&nbsp;</td>
+				<td class=xl969606>&nbsp;</td>
+				<td class=xl979606>&nbsp;</td>
+				<td class=xl989606>&nbsp;</td>
+				<td class=xl929606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
+				<td colspan=8 rowspan=3 class=xl1569606
+					style='border-right: 1.0pt solid black; border-bottom: 1.0pt solid black'>&nbsp;</td>
+				<td class=xl929606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl939606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl929606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td height=21 class=xl939606 style='height: 15.75pt'>&nbsp;</td>
+				<td class=xl929606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=6 style='mso-height-source: userset; height: 4.5pt'>
+				<td height=6 class=xl939606 style='height: 4.5pt'>&nbsp;</td>
+				<td class=xl1149606>&nbsp;</td>
+				<td class=xl1149606>&nbsp;</td>
+				<td class=xl1149606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1169606>&nbsp;</td>
+				<td class=xl1169606>&nbsp;</td>
+				<td class=xl929606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=10 height=20 class=xl1659606
+					style='border-right: 1.0pt solid black; height: 15.0pt'>I
+					AGREE THAT ALL WORK HAS BEEN PERFORMED TO MY SATISFACTION.</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl999606 style='height: 15.0pt'>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1179606></td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1009606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=6 height=20 class=xl1019606 style='height: 15.0pt'>Signature/Print
+					Name:________________________________________________</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606 colspan=3
+					style='border-right: 1.0pt solid black'>Completed
+					Date:______________________</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=14 style='mso-height-source: userset; height: 10.5pt'>
+				<td height=14 class=xl1019606 style='height: 10.5pt'>&nbsp;</td>
+				<td class=xl1189606>&nbsp;</td>
+				<td class=xl1189606>&nbsp;</td>
+				<td class=xl1189606>&nbsp;</td>
+				<td class=xl1189606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1159606>&nbsp;</td>
+				<td class=xl1009606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=10 height=21 class=xl1029606
+					style='border-right: 1.0pt solid black; height: 15.75pt'>Thank
+					You For Your Business!</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=10 height=21 class=xl1029606
+					style='border-right: 1.0pt solid black; height: 15.75pt'>Review
+					us on Google and be entered to win free monitoring</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td colspan=10 height=20 class=xl1329606
+					style='border-right: 1.0pt solid black; height: 15.0pt'><a
+					href="https://search.google.com/local/writereview?placeid=ChIJ_b85VG35a4cRhyd5Rlj3St8"><span
+						style='color: #0563C1; font-weight: 400; text-decoration: underline; text-underline-style: single; font-family: Calibri, sans-serif; mso-font-charset: 0'>https://search.google.com/local/writereview?placeid=ChIJ_b85VG35a4cRhyd5Rlj3St8</span></a></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=12 style='mso-height-source: userset; height: 9.0pt'>
+				<td height=12 class=xl1029606 style='height: 9.0pt'>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1209606>&nbsp;</td>
+				<td class=xl1039606>&nbsp;</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=21 style='height: 15.75pt'>
+				<td colspan=10 height=21 class=xl1449606
+					style='border-right: 1.0pt solid black; height: 15.75pt'>PO
+					Box 826 Longmont, CO 80502 | 303-651-7371 office |
+					service@tridentco.net</td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl679606 colspan=2 style='height: 15.0pt'><a
+					href="#Dashboard!A1">Back to Home</a></td>
+				<td class=xl1199606></td>
+				<td class=xl1199606></td>
+				<td class=xl1199606></td>
+				<td class=xl1199606></td>
+				<td class=xl1199606></td>
+				<td class=xl1199606></td>
+				<td class=xl159606></td>
+				<td class=xl679606><a href="#Dashboard!A1">Assign Button</a></td>
+				<td colspan=8 rowspan=2 class=xl1269606 width=512
+					style='width: 384pt'>This button would redirect to Google
+					Calendar to create a new calendar event for a specific field tech.</td>
+			</tr>
+			<tr height=20 style='mso-height-source: userset; height: 15.0pt'>
+				<td height=20 class=xl159606 style='height: 15.0pt'></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+			</tr>
+			<tr height=20 style='height: 15.0pt'>
+				<td height=20 class=xl159606 style='height: 15.0pt'></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606></td>
+				<td class=xl159606 colspan=7>I am not sure the best way to
+					accomplish this - we are open to ideas.</td>
+				<td class=xl159606></td>
+			</tr>
+			<![if supportMisalignedColumns]>
+			<tr height=0 style='display: none'>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=121 style='width: 91pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+				<td width=64 style='width: 48pt'></td>
+			</tr>
+			<![endif]>
+		</table>
+
+	</div>
+
+
+	<!----------------------------->
+	<!--END OF OUTPUT FROM EXCEL PUBLISH AS WEB PAGE WIZARD-->
+	<!----------------------------->
 </div>

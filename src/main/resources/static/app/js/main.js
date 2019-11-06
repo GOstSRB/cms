@@ -311,10 +311,119 @@ cmsApp.controller("editItemCtrl", function($scope, $http, $location, $routeParam
 	
 });
 
+// ctrl for listdropdown in workOrder.html VARIANT II
+cmsApp.controller("ListCtrl", function($scope, $http, $location, $timeout, $q, $log){
+	
+	$scope.items = [];
+	
+	var itemsUrl = "/api/items";
+	var _selected;
+	
+	// when add new item in workOrders and search for items
+	$scope.change = function(text) {
+		valtosend = $scope.query;
+		$http.get(itemsUrl+"?partName=" + valtosend).then(function(result){
+			$scope.items = result.data;
+			console.log(result);
+			}
+		);
+	}
+	
+});
+
+//ctrl for autocomplite in workOrder.html VARIANT IV
+//function () {
+//	  'use strict';
+//	  angular
+//	      .module('autocompleteDemo', ['ngMaterial'])
+//	      .controller('DemoCtrl', DemoCtrl);
+//
+//	  function DemoCtrl ($timeout, $q, $log) {
+//	    var self = this;
+//
+//	    self.simulateQuery = false;
+//	    self.isDisabled    = false;
+//
+//	    // list of `state` value/display objects
+//	    self.states        = loadAll();
+//	    self.querySearch   = querySearch;
+//	    self.selectedItemChange = selectedItemChange;
+//	    self.searchTextChange   = searchTextChange;
+//
+//	    self.newState = newState;
+//
+//	    function newState(state) {
+//	      alert("Sorry! You'll need to create a Constitution for " + state + " first!");
+//	    }
+//
+//	    // ******************************
+//	    // Internal methods
+//	    // ******************************
+//
+//	    /**
+//	     * Search for states... use $timeout to simulate
+//	     * remote dataservice call.
+//	     */
+//	    function querySearch (query) {
+//	      var results = query ? self.states.filter(createFilterFor(query)) : self.states,
+//	          deferred;
+//	      if (self.simulateQuery) {
+//	        deferred = $q.defer();
+//	        $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
+//	        return deferred.promise;
+//	      } else {
+//	        return results;
+//	      }
+//	    }
+//
+//	    function searchTextChange(text) {
+//	      $log.info('Text changed to ' + text);
+//	    }
+//
+//	    function selectedItemChange(item) {
+//	      $log.info('Item changed to ' + JSON.stringify(item));
+//	    }
+//
+//	    /**
+//	     * Build `states` list of key/value pairs
+//	     */
+//	    function loadAll() {
+//	      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+//	              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+//	              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+//	              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+//	              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+//	              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+//	              Wisconsin, Wyoming';
+//
+//	      return allStates.split(/, +/g).map(function (state) {
+//	        return {
+//	          value: state.toLowerCase(),
+//	          display: state
+//	        };
+//	      });
+//	    }
+//
+//	    /**
+//	     * Create filter function for a query string
+//	     */
+//	    function createFilterFor(query) {
+//	      var lowercaseQuery = query.toLowerCase();
+//
+//	      return function filterFn(state) {
+//	        return (state.value.indexOf(lowercaseQuery) === 0);
+//	      };
+//
+//	    }
+//	  }
+//	});
+	
+	
 cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, $q, $log){
 	
 	$scope.workOrders = [];
 	$scope.users = [];
+	$scope.items = [];
 
 	$scope.newWorkOrder = {};
 	$scope.newWorkOrder.brojMesta = "";
@@ -329,11 +438,18 @@ cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, 
 // $scope.searchParams.prevoznikId = "";
 // $scope.searchParams.cenaKarte = "";
 	
+	$scope.newItemDescription = "";
+	$scope.newItemQty = "";
+	$scope.newItemUnitPrice = "";
+	$scope.newItemTotal = "";
+	
+	
 	$scope.pageNum = 0;
 	$scope.totalPages = 1
-	
+		
 	var workOrdersUrl = "/api/workorders";
 	var userUrl = "/api/users";
+	var itemsUrl = "/api/items";
 	
 	// dont need all users...
 //	var getUsers = function(){
@@ -361,6 +477,7 @@ cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, 
 //	
 //	getUsers();
 	
+	
 	// for input field when search users
 	$scope.change = function(text) {
 		valtosend = $scope.searchParams.username;
@@ -370,6 +487,8 @@ cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, 
 			}
 		);
 	}
+	// not in use
+	// for drop down of search field customer
 	 $scope.ngModelOptionsSelected = function(value) {
 		    if (arguments.length) {
 		      _selected = value;
@@ -377,7 +496,8 @@ cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, 
 		      return _selected;
 		    }
 		  };
-	
+	// not in use	  
+	// for drop down of search field customer
 	 $scope.modelOptions = {
 			    debounce: {
 			      default: 500,
@@ -385,137 +505,42 @@ cmsApp.controller("workOrderCtrl", function($scope, $http, $location, $timeout, 
 			    },
 			    getterSetter: true
 			  };
-	// for auto complete field
-//	$scope.query = function(searchText) {
-//	    return $http
-//	      .get(userUrl + '?userName=' + searchText)
-//	      .then(function(data) {
-//	        // Map the response object to the data object.
-//	    	  $scope.users = result.data;
-//	    	  console.log(result);
-//	    	  return users;
-//	      });
-//	  };
-
-//	function () {
-//		  'use strict';
-//		  angular
-//		      .module('autocompleteDemo', ['ngMaterial'])
-//		      .controller('DemoCtrl', DemoCtrl);
-
-		
-		    var self = this;
-
-		    self.simulateQuery = false;
-		    self.isDisabled    = false;
-
-		    // list of `state` value/display objects
-		    self.states        = loadAll();
-		    self.querySearch   = querySearch;
-		    self.selectedItemChange = selectedItemChange;
-		    self.searchTextChange   = searchTextChange;
-
-		    self.newState = newState;
-
-		    function newState(state) {
-		      alert("Sorry! You'll need to create a Constitution for " + state + " first!");
-		    }
-
-		    // ******************************
-		    // Internal methods
-		    // ******************************
-
-		    /**
-		     * Search for states... use $timeout to simulate
-		     * remote dataservice call.
-		     */
-		    function querySearch (query) {
-		      var results = query ? self.states.filter(createFilterFor(query)) : self.states,
-		          deferred;
-		      if (self.simulateQuery) {
-		        deferred = $q.defer();
-		        $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
-		        return deferred.promise;
-		      } else {
-		        return results;
-		      }
-		    }
-
-		    function searchTextChange(text) {
-		      $log.info('Text changed to ' + text);
-		    }
-
-		    function selectedItemChange(item) {
-		      $log.info('Item changed to ' + JSON.stringify(item));
-		    }
-
-		    /**
-		     * Build `states` list of key/value pairs
-		     */
-		    function loadAll() {
-		      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-		              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-		              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-		              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-		              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-		              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-		              Wisconsin, Wyoming';
-
-		      return allStates.split(/, +/g).map(function (state) {
-		        return {
-		          value: state.toLowerCase(),
-		          display: state
-		        };
-		      });
-		    }
-
-		    /**
-		     * Create filter function for a query string
-		     */
-		    function createFilterFor(query) {
-		      var lowercaseQuery = query.toLowerCase();
-
-		      return function filterFn(state) {
-		        return (state.value.indexOf(lowercaseQuery) === 0);
-		      };
-
-		    }
-	
-	
-	
-	
-	
-//    $scope.addList = function($location, , WatchlistService) {
-    	var getAddList = function() {
-//	// [2] Initialize variables
-    		
-//	$scope.watchlist = {};
-//	var addListModal = $modal({
-//		scope : $scope,
-//		template : '/app/html/listOfItemInWorkOrder.html',
-//		show : false
-//	});
-//	// [3] Bind model from service to this scope
-//	$scope.watchlists = WatchlistService.query();
-//	// [4] Display addlist modal
-//	$scope.showModal = function() {
-//		addListModal.$promise.then(addListModal.show);
-//	};
-	// [5] Create a new list from fields in modal
-	$scope.createList = function() {
-		WatchlistService.save($scope.watchlist);
-		addListModal.hide();
-		$scope.watchlist = {};
-	};
-//	// [6] Delete desired list and redirect to home
-//	$scope.deleteList = function(list) {
-//		WatchlistService.remove(list);
-//		$location.path('/');
-//				};
-//			}
+	 
+	 $scope.addItem = function() {
+			
+			var itemNew = {};
+			
+			itemNew.description = $scope.newItemDescription;
+			itemNew.qty = $scope.newItemQty;
+			itemNew.unitPrice = $scope.newItemUnitPrice;
+			itemNew.total =  $scope.newItemTotal;
+			
+			$scope.items.push(itemNew);
+			
+			$scope.newItemDescription = "";
+			$scope.newItemQty = "";
+			$scope.newItemUnitPrice = "";
+			$scope.newItemTotal = "";
 		};
-		getAddList();
-//});
+		
+	// not working
+	// for auto complete field
+	$scope.getItems = function(val) {
+	    return $http
+	      .get(itemsUrl, {
+	          params: {
+	        	  partName: val,
+	              sensor: false
+	            }
+	      }).then(function(response) {
+	        // Map the response object to the data object.
+	    	  return response.data.result.map(function(it){
+	    		  return it.ok;
+	    	  });
+	    	
+	      });
+	  };
+
 	
 	$scope.doAdd = function(){
 		

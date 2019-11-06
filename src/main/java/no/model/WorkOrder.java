@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -56,6 +59,9 @@ public class WorkOrder {
 	
 	@OneToMany(mappedBy="workOrder", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Item> items = new ArrayList<>();
+	
+//	@ManyToMany(mappedBy="workOrder")
+//	private List<Item> items = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -131,6 +137,22 @@ public class WorkOrder {
 	public void setAdditionalComments(String additionalComments) {
 		this.additionalComments = additionalComments;
 	}
+
+//	public List<Item> getItems() {
+//		return items;
+//	}
+//
+//	public void setItems(List<Item> items) {
+//		this.items = items;
+//	}
+//	
+//	public void addItem (Item item) {
+//		if(item.getWorkOrder() !=this) {
+//			item.setWorkOrder(this);
+//		}
+//		items.add(item);
+//	}
+
 
 	public List<Item> getItem() {
 		return items;
