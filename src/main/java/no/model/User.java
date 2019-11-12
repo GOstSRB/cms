@@ -70,6 +70,9 @@ public class User {
 	@Column(name="sick")
 	private Long sick;
 	
+	@Column(name="address")
+	private Long address;
+	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List <WorkOrder> workOrders = new ArrayList<>();
 

@@ -46,6 +46,4 @@ public class JpaItemService implements ItemService {
 	public List<Item> findBypartNameLike(String name) {
 		return itemRepository.findBypartNameLike("%"+name+"%");
 	}
-
-	
 }

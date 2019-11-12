@@ -21,10 +21,11 @@ public class WorkOrderToWorkOrderDTO implements Converter<WorkOrder, WorkOrderDT
 		wodto.setArrivalTime(source.getArrivalTime());
 		wodto.setDate(source.getDate());
 		wodto.setDepartueTime(source.getDepartueTime());
-		wodto.setItems(source.getItem());
+//		wodto.setItems(source.getItems());
 		wodto.setStatus(source.getStatus());
 		wodto.setWorkOrderName(source.getWorkOrderName());
 		wodto.setWorkOrderPhone(source.getWorkOrderPhone());
+		wodto.setItemss(source.getItemss());
 		
 		return wodto;
 	}

@@ -1,7 +1,9 @@
 package no.web.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import no.model.Item;
 import no.model.User;
@@ -39,20 +41,16 @@ public class WorkOrderDTO {
 	private String misc1;
 	private String misc2;
 	private String misc3;
+//	private List<Item> items = new ArrayList<>();
+	private Set<Item> itemss = new HashSet<>();
 	
-	
-	
-	
-	
-	private List<Item> items = new ArrayList<>();
-
-	public List<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
+//	public List<Item> getItems() {
+//		return items;
+//	}
+//
+//	public void setItems(List<Item> items) {
+//		this.items = items;
+//	}
 
 	public Long getId() {
 		return id;
@@ -132,6 +130,62 @@ public class WorkOrderDTO {
 
 	public void setAdditionalComments(String additionalComments) {
 		this.additionalComments = additionalComments;
+	}
+
+	public String getPocName() {
+		return pocName;
+	}
+
+	public void setPocName(String pocName) {
+		this.pocName = pocName;
+	}
+
+	public String getPocPhone() {
+		return pocPhone;
+	}
+
+	public void setPocPhone(String pocPhone) {
+		this.pocPhone = pocPhone;
+	}
+
+	public String getPocEmail() {
+		return pocEmail;
+	}
+
+	public void setPocEmail(String pocEmail) {
+		this.pocEmail = pocEmail;
+	}
+
+	public String getMisc1() {
+		return misc1;
+	}
+
+	public void setMisc1(String misc1) {
+		this.misc1 = misc1;
+	}
+
+	public String getMisc2() {
+		return misc2;
+	}
+
+	public void setMisc2(String misc2) {
+		this.misc2 = misc2;
+	}
+
+	public String getMisc3() {
+		return misc3;
+	}
+
+	public void setMisc3(String misc3) {
+		this.misc3 = misc3;
+	}
+
+	public Set<Item> getItemss() {
+		return itemss;
+	}
+
+	public void setItemss(Set<Item> itemss) {
+		this.itemss = itemss;
 	}
 	
 

@@ -27,10 +27,11 @@ public class WorkOrderDTOToWorkOrder implements Converter<WorkOrderDTO, WorkOrde
 		workOrder.setArrivalTime(source.getArrivalTime());
 		workOrder.setDate(source.getDate());
 		workOrder.setDepartueTime(source.getDepartueTime());
-		workOrder.setItems(source.getItems());
+//		workOrder.setItems(source.getItems());
 		workOrder.setStatus(source.getStatus());
 		workOrder.setWorkOrderName(source.getWorkOrderName());
 		workOrder.setWorkOrderPhone(source.getWorkOrderPhone());
+		workOrder.setItemss(source.getItemss());
 		return workOrder;
 	}
 

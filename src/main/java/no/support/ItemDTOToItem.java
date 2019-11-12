@@ -24,7 +24,7 @@ public class ItemDTOToItem implements Converter<ItemDTO, Item>{
 			item = new Item();
 		}
 		//When we insert new item to our store...
-//		item.setId(itemDTO.getId());
+		item.setId(itemDTO.getId());
 		item.setPartName(itemDTO.getPartName());
 		item.setPartNumber(itemDTO.getPartNumber());
 		item.setPartPrice(itemDTO.getPartPrice());

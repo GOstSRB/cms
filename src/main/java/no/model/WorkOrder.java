@@ -1,7 +1,9 @@
 package no.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name="workOrder")
 public class WorkOrder {
@@ -57,11 +62,62 @@ public class WorkOrder {
 	@Column(name="additionalComments")
 	private String additionalComments;
 	
-	@OneToMany(mappedBy="workOrder", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private List<Item> items = new ArrayList<>();
+	// this generate table workorder_item with id`s but I don`t know how to use...
+	@ManyToMany(targetEntity = Item.class, cascade = {CascadeType.ALL})
+	@JoinTable(name="workorder_item",
+			joinColumns = {@JoinColumn(name="workOrder_id")},
+ 		    inverseJoinColumns = {@JoinColumn(name="item_id")}
+	)
+	private Set<Item> itemss;
 	
-//	@ManyToMany(mappedBy="workOrder")
-//	private List<Item> items = new ArrayList<>();
+	//for number of items from magacin to workorder
+	@OneToMany(mappedBy="workOrder", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<CartItem> cartItems = new ArrayList<>();
+	
+	@Column(name="reasonForService")
+	private String reasonForService;
+	
+	@Column(name="customerName")
+	private String customerName;
+	
+	@Column(name="customerAddress")
+	private String customerAddress;
+	
+	@Column(name="pocName")
+	private String pocName;
+	
+	@Column(name="pocPhone")
+	private String pocPhone;
+	
+	@Column(name="pocEmail")
+	private String pocEmail;
+	
+	@Column(name="misc1")
+	private String misc1;
+	
+	@Column(name="misc2")
+	private String misc2;
+	
+	@Column(name="misc3")
+	private String misc3;
+	
+	@Column(name="description")
+	private String description;
+	
+	@Column(name="quantity")
+	private Integer quantity;
+		
+	@Column(name="unitPrice")
+	private Double unitPrice;
+	
+	@Column(name="total")
+	private Double total;
+	
+	@Column(name="totals")
+	private Double totals;
+	
+	@Column(name="descriptionOfWork")
+	private String descriptionOfWork;
 
 	public Long getId() {
 		return id;
@@ -138,35 +194,27 @@ public class WorkOrder {
 		this.additionalComments = additionalComments;
 	}
 
-//	public List<Item> getItems() {
-//		return items;
-//	}
-//
-//	public void setItems(List<Item> items) {
-//		this.items = items;
-//	}
-//	
-//	public void addItem (Item item) {
-//		if(item.getWorkOrder() !=this) {
-//			item.setWorkOrder(this);
-//		}
-//		items.add(item);
-//	}
-
-
-	public List<Item> getItem() {
-		return items;
+	public Set<Item> getItemss() {
+		return itemss;
 	}
 
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public void setItemss(Set<Item> itemss) {
+		this.itemss = itemss;
+	}
+
+	public List<CartItem> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(List<CartItem> cartItems) {
+		this.cartItems = cartItems;
 	}
 	
-	public void addItem (Item item) {
-		if(item.getWorkOrder() !=this) {
-			item.setWorkOrder(this);
+	public void addCartItem(CartItem cartItem) {
+		this.cartItems.add(cartItem);
+		if (!this.equals(cartItem.getWorkOrder())) {
+			cartItem.setWorkOrder(this);
 		}
-		items.add(item);
 	}
 
 }

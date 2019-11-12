@@ -13,9 +13,6 @@ public class ItemDTO {
 		private String partName;
 		private String partNumber;
 		private Double partPrice;
-//		private WorkOrder workOrder;
-		private Long workOrderId;
-		private String workOrderName;
 
 		public Long getId() {
 			return id;
@@ -75,26 +72,4 @@ public class ItemDTO {
 		public void setPartPrice(Double partPrice) {
 			this.partPrice = partPrice;
 		}
-
-
-		public Long getWorkOrderId() {
-			return workOrderId;
-		}
-
-
-		public void setWorkOrderId(Long workOrderId) {
-			this.workOrderId = workOrderId;
-		}
-
-
-		public String getWorkOrderName() {
-			return workOrderName;
-		}
-
-
-		public void setWorkOrderName(String workOrderName) {
-			this.workOrderName = workOrderName;
-		}
-
-
 }

@@ -3,15 +3,13 @@ package no.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,32 +21,26 @@ public class Item {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="quantity")
-	private Long quantity;
+	@Column(name="partName")
+	private String partName;
 	
 	// Batteries, Honeywell, Cameras, Wire
 	@Column(name="partType")
 	private String partType;
 	
-	@Column(name="partName")
-	private String partName;
+	@Column(name="quantity")
+	private Long quantity;
 	
 	@Column(name="partNumber")
 	private String partNumber;
 	
 	@Column(name="partPrice")
 	private Double partPrice;
-	
-//	@ManyToMany
-//	@JoinTable(name="ITEM_WORKORDERS",
-//			joinColumns = {@JoinColumn(name="ITEM_ID")},
-// 		    inverseJoinColumns = @JoinColumn(name="WORKORDER_ID"))
-//	private List<WorkOrder> workOrders = new ArrayList<>();
-	
-	// we dont need this!!!!
-	@ManyToOne(fetch=FetchType.EAGER)
-	private WorkOrder workOrder;
 
+	//for number of items from magacin to workorder
+	@OneToMany(mappedBy="item", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<CartItem> cartItems = new ArrayList<>();
+	
 	public Long getId() {
 		return id;
 	}
@@ -97,16 +89,18 @@ public class Item {
 		this.partPrice = partPrice;
 	}
 
-	public WorkOrder getWorkOrder() {
-		return workOrder;
+	public List<CartItem> getCartItems() {
+		return cartItems;
 	}
 
-	public void setWorkOrder(WorkOrder workOrder) {
-		this.workOrder = workOrder;
-		if(!workOrder.getItem().contains(this)) {
-			workOrder.getItem().add(this);
+	public void setCartItems(List<CartItem> cartItems) {
+		this.cartItems = cartItems;
+	}
+	
+	public void addCartItem(CartItem cartItem) {
+		this.cartItems.add(cartItem);
+		if (!this.equals(cartItem.getItem())) {
+			cartItem.setItem(this);
 		}
 	}
-
-
 }
